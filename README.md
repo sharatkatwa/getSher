@@ -1,1 +1,1 @@
-a Realtime score tracking application with precition
+a Realtime score tracking application with precision
