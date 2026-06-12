@@ -1,6 +1,7 @@
 import express from "express";
 import env from "./config/env.js";
 import morgan from "morgan";
+import ErrorHandler from "./middleware/errorHandler.middleware.js";
 
 export default function createApp() {
   const app = express();
@@ -14,6 +15,8 @@ export default function createApp() {
   if (env.NODE_ENV === "development") {
     app.use(morgan("dev"));
   }
+
+  app.use(ErrorHandler)
 
   return app;
 }
