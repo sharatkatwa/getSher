@@ -18,6 +18,7 @@ export default function createApp() {
   googleOAuthMiddleware(app)
 
   if (env.NODE_ENV === "development") {
+  
     app.use(morgan("dev"));
   }
   // all middlewares related to security found here
