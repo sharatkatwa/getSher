@@ -1,6 +1,7 @@
 import express from "express";
 import env from "./config/env.js"
 import morgan from "morgan";
+import ErrorHandler from "./middleware/errorHandler.middleware.js";
 import securityMiddleware from "./middlewares/security.middleware.js";
 import googleOAuthMiddleware from "./middlewares/googleOAuth.middleware.js";
 import authRouter from './modules/auth/auth.router.js'
@@ -29,6 +30,8 @@ export default function createApp() {
   });
 
   app.use('/api/auth',authRouter)
+
+  app.use(ErrorHandler)
 
   return app;
 }
