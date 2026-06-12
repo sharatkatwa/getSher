@@ -11,7 +11,6 @@ export default function createApp() {
   }
   // all middlewares related to security found here
   securityMiddleware(app)
-  console.log('HHHHHHHHHHHHHHHHHH');
 
   app.get("/health", (req, res) => {
     res.json({
