@@ -1,9 +1,14 @@
 import express from "express";
 import env from "./config/env.js"
 import morgan from "morgan";
+
+// middleware import statements
 import ErrorHandler from "./middlewares/errorHandler.middleware.js";
 import securityMiddleware from "./middlewares/security.middleware.js";
 import googleOAuthMiddleware from "./middlewares/googleOAuth.middleware.js";
+import notFound from "./middlewares/notFound.middleware.js";
+
+// routes import statement
 import authRouter from './modules/public/auth/auth.router.js'
 
 export default function createApp() {
@@ -28,10 +33,11 @@ export default function createApp() {
     res.json({
       message: "api is healthy",
     });
-  });
+  });  
 
   app.use('/api/auth',authRouter)
 
+  app.use(notFound)
   app.use(ErrorHandler)
 
   return app;
