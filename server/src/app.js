@@ -4,7 +4,7 @@ import morgan from "morgan";
 import ErrorHandler from "./middleware/errorHandler.middleware.js";
 import securityMiddleware from "./middlewares/security.middleware.js";
 import googleOAuthMiddleware from "./middlewares/googleOAuth.middleware.js";
-import authRouter from './modules/auth/auth.router.js'
+import authRouter from './modules/public/auth/auth.router.js'
 
 export default function createApp() {
   const app = express(); 

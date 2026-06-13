@@ -1,6 +1,6 @@
 import AuthService from "./auth.service.js"
-import env from "../../config/env.js" 
-import { app_config } from "../../constants/app.constant.js"
+import env from "../../../config/env.js" 
+import { app_config } from "../../../constants/app.constant.js"
 
 
 export default class AuthController {
