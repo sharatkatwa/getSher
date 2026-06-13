@@ -8,8 +8,9 @@ import securityMiddleware from "./middlewares/security.middleware.js";
 import googleOAuthMiddleware from "./middlewares/googleOAuth.middleware.js";
 import notFound from "./middlewares/notFound.middleware.js";
 
-// routes import statement
+// routes import statements
 import authRouter from './modules/public/auth/auth.router.js'
+
 
 export default function createApp() {
   const app = express(); 
