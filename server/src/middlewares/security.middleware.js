@@ -5,6 +5,7 @@ import hpp from "hpp";
 import compression from "compression";
 import cors from "cors";
 import rateLimit from 'express-rate-limit'
+import cookieParser from 'cookie-parser'
 
 export default function securityMiddleware(app) {
 
@@ -15,6 +16,9 @@ export default function securityMiddleware(app) {
       credentials: true,
     }),
   );
+  
+  // to get cookies in request
+  app.use(cookieParser())
   
   // to limit the no of request from client.
   app.use(rateLimit({

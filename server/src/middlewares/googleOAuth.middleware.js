@@ -1,6 +1,7 @@
 import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import env from '../config/env.js'
 
 
 export default function googleOAuthMiddleware(app) {
@@ -10,9 +11,9 @@ export default function googleOAuthMiddleware(app) {
     passport.use(
         new GoogleStrategy(
             {
-                clientID: process.env.GOOGLE_CLIENT_ID,
-                clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                callbackURL: '/auth/google/callback',
+                clientID: env.GOOGLE_CLIENT_ID,
+                clientSecret: env.GOOGLE_CLIENT_SECRET,
+                callbackURL: env.GOOGLE_CALLBACK_URL,
             },
             (accessToken, refreshToken, profile, done) => {
                 // Here, you would typically find or create a user in your database

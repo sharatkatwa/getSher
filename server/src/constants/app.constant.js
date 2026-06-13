@@ -5,6 +5,7 @@ export default {
   NODE_ENV: "development",
   RATELIMIT_WINDOWMS: 15 * 60 * 1000,
   RATELIMIT: 100,
+  GOOGLE_CALLBACK_URL: '/auth/google/callback'
 };
 
 
@@ -15,12 +16,12 @@ export const app_config = {
   },
   cookie: {
     accessToken: {
-      ttpOnly: false,
+      httpOnly: false,
       secure: false,
       maxAge: 60 * 60 * 1000
     },
     refreshToken: {
-      ttpOnly: true,
+      httpOnly: true,
       secure: false,
       maxAge: 60 * 60 * 1000
     }
