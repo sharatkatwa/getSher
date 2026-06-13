@@ -1,11 +1,5 @@
 import { model, Schema } from "mongoose";
-
-export const PLAYER_ROLES = {
-  BATSMAN: "BATSMAN",
-  BOWLER: "BOWLER",
-  ALL_ROUNDER: "ALL_ROUNDER",
-  WICKET_KEEPER: "WICKET_KEEPER",
-};
+import { PLAYER_ROLES } from "../constants/model.constant.js
 
 const playerSchema = new Schema(
   {
