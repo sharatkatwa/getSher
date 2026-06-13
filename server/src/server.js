@@ -9,7 +9,6 @@ const app = createApp();
 // function for graceful shutdown of server
 const gracefulShutdown = (signal, server) => {
   console.log(`${signal} Shutting down the server...`);
-  console.log(server);
   server.close(async () => {
     console.log("server closed");
     await mongoose.connection.close();
