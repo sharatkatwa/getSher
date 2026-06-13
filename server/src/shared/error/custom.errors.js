@@ -26,3 +26,13 @@ export class ValidationError extends AppError {
     super(message, StatusCodes.BAD_REQUEST, details);
   }
 }
+export class ForbiddenError extends AppError {
+  constructor(message = "Forbidden", details = "") {
+    super(message, StatusCodes.FORBIDDEN, details);
+  }
+}
+export class ConflictError extends AppError {
+  constructor(message = "Conflict", details = "") {
+    super(message, StatusCodes.CONFLICT, details);
+  }
+}
