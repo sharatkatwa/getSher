@@ -12,6 +12,7 @@ import notFound from "./middlewares/notFound.middleware.js";
 import authRouter from './modules/public/auth/auth.router.js'
 
 
+
 export default function createApp() {
   const app = express(); 
 
