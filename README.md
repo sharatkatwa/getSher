@@ -1,1 +1,1 @@
-a Realtime score tracking application with precision with socket.io
+
