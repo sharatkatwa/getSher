@@ -16,7 +16,7 @@ export const authenticateMiddleware = (req,res,next) =>{
     }
 }
 
-export const authorizeRoles = (role) =>{
+export const authorizeRole = (role) =>{
     return (req,res,next)=>{
         if(role.includes(req.user.role))
             next()
