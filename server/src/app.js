@@ -10,6 +10,8 @@ import notFound from "./middlewares/notFound.middleware.js";
 
 // routes import statements
 import authRouter from './modules/public/auth/auth.router.js'
+import privateTeamRoutes from './modules/private/team/team.route.js'
+import publicTeamRoutes from './modules/public/team/team.route.js'
 
 
 
@@ -33,6 +35,8 @@ export default function createApp() {
   });  
 
   app.use('/api/auth',authRouter)
+  app.use('/api/team',privateTeamRoutes)
+  app.use('/api/team',publicTeamRoutes)
 
   app.use(notFound)
   app.use(ErrorHandler)

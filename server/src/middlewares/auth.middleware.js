@@ -12,7 +12,7 @@ export const authenticateMiddleware = (req,res,next) =>{
     } catch (error) {
         if(error.name === 'TokenExpiredError')
             throw new UnauthorizedError('Access token expired!')
-        throw new UnauthorizedError('TOken not found')
+        throw new UnauthorizedError('Token not found')
     }
 }
 
