@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import PlayerService from "./player.service.js";
-import { buildSuccessResponse } from "../../../shared/utils/buildResponse.js";
+import { buildSuccessResponse } from "../../../shared/utils/buildSuccessResponse.js";
 
 export default class PlayerController {
   constructor() {
@@ -12,20 +12,23 @@ export default class PlayerController {
 
     return buildSuccessResponse(
       res,
-      player,
       "Player created successfully",
-      StatusCodes.CREATED
+      StatusCodes.CREATED,
+      player
     );
   }
 
   async updatePlayer(req, res) {
-    const player = await this.playerService.updatePlayer(req.params.id, req.body);
+    const player = await this.playerService.updatePlayer(
+      req.params.id,
+      req.body
+    );
 
     return buildSuccessResponse(
       res,
-      player,
       "Player updated successfully",
-      StatusCodes.OK
+      StatusCodes.OK,
+      player
     );
   }
 
@@ -34,9 +37,9 @@ export default class PlayerController {
 
     return buildSuccessResponse(
       res,
-      player,
       "Player deleted successfully",
-      StatusCodes.OK
+      StatusCodes.OK,
+      player
     );
   }
 }

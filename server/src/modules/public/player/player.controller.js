@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import PlayerService from "./player.service.js";
-import { buildSuccessResponse } from "../../../shared/utils/buildResponse.js";
+import { buildSuccessResponse } from "../../../shared/utils/buildSuccessResponse.js";
 
 export default class PlayerController {
   constructor() {
@@ -12,9 +12,9 @@ export default class PlayerController {
 
     return buildSuccessResponse(
       res,
-      players,
       "Players fetched successfully",
-      StatusCodes.OK
+      StatusCodes.OK,
+      players
     );
   }
 
@@ -23,9 +23,9 @@ export default class PlayerController {
 
     return buildSuccessResponse(
       res,
-      player,
       "Player fetched successfully",
-      StatusCodes.OK
+      StatusCodes.OK,
+      player
     );
   }
 }
