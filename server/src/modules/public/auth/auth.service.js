@@ -22,9 +22,17 @@ export default class AuthService {
          result = _user
       }
 
-      const refreshToken = jwt.sign({ data: result }, env.REFRESH_TOKEN_SECRET, app_config.jwt.refreshToken)
+      let data = {
+         id: result._id,
+         email: user.emails[0].value,
+         picture: user.photos[0].value,
+         role: result.role,
+         name: user.displayName
+      }
 
-      const accessToken = jwt.sign({ data: result }, env.ACCESS_TOKEN_SECRET, app_config.jwt.accessToken)
+      const refreshToken = jwt.sign(data, env.REFRESH_TOKEN_SECRET, app_config.jwt.refreshToken)
+
+      const accessToken = jwt.sign(data, env.ACCESS_TOKEN_SECRET, app_config.jwt.accessToken)
 
       return {
          refreshToken,
