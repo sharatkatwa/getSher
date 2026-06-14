@@ -22,7 +22,7 @@ export default class SeriesRepository {
   }
 
   async update(id, payload) {
-    return await seriesModel.findByIdAndUpdate(id, payload, { new: true });
+    return await seriesModel.findByIdAndUpdate(id, payload, { returnDocument: "after" });
   }
 
   async delete(id) {
