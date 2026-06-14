@@ -30,3 +30,4 @@ export default class SeriesRepository {
   }
 
 }
+
