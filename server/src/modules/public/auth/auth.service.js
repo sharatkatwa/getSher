@@ -44,12 +44,12 @@ export default class AuthService {
    }
 
    async RegisterUser(data) {
-      if(!data.name || !data.email || !data.password){
+      if (!data.name || !data.email || !data.password) {
          throw new ValidationError('All fields are Required')
       }
 
       const isUserPresent = await this.userRepo.findByEmail(data.email)
-      
+
 
       if (isUserPresent) {
          throw new ConflictError("Email Already Registred")
@@ -63,13 +63,12 @@ export default class AuthService {
          password: hassPass,
       })
 
-      console.log(user)
 
       let userInfoForToken = {
          id: user._id,
          email: user.emails,
          picture: user.photos,
-         role: result.role,
+         role: user.role,
          name: user.displayName
       }
 
@@ -85,11 +84,10 @@ export default class AuthService {
    }
 
    async LoginUser(data) {
-      console.log(data)
-      if(!data.email || !data.password){
+      if (!data.email || !data.password) {
          throw new ValidationError('All fields are Required')
       }
-      
+
       const user = await this.userRepo.findByEmail(data.email)
 
       if (!user) {
@@ -98,7 +96,7 @@ export default class AuthService {
 
       let hassPass = bcrypt.compareSync(data.password, user.password)
 
-      if(!hassPass){
+      if (!hassPass) {
          throw new UnauthorizedError('Invalid Credentials')
       }
 
@@ -119,5 +117,42 @@ export default class AuthService {
          refreshToken,
          accessToken,
       }
+   }
+
+   async GetMeService(data) {
+      let user = await this.userRepo.findById(data.id)
+      console.log(user)
+      if (!user) {
+         throw new UnauthorizedError('Invalid request')
+      }
+      return user
+   }
+
+   async RefreshTokenService(data) {
+      let refreshToken = data.refreshToken
+
+      if (!refreshToken) {
+         throw new UnauthorizedError('Session expired')
+      }
+
+      let decode = await jwt.verify(refreshToken, env.REFRESH_TOKEN_SECRET)
+
+      let user = await this.userRepo.findById(decode.id)
+
+      if (!decode) {
+         throw new UnauthorizedError('Invalid Token')
+      }
+
+      let userInfoForToken = {
+         id: user._id,
+         email: user.emails,
+         picture: user.photos,
+         role: user.role,
+         name: user.displayName
+      }
+      const accessToken = jwt.sign(userInfoForToken, env.ACCESS_TOKEN_SECRET, app_config.jwt.accessToken)
+
+      return accessToken
+
    }
 }

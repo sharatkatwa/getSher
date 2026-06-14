@@ -43,9 +43,7 @@ export default class AuthController {
     }
 
     async Login(req, res) {
-        const {user, accessToken, refreshToken } = await this.userService.LoginUser(req.body)
-        console.log(user);
-        
+        const { user, accessToken, refreshToken } = await this.userService.LoginUser(req.body)
 
         res.cookie('refreshToken', refreshToken, app_config.cookie.refreshToken)
 
@@ -59,5 +57,30 @@ export default class AuthController {
             user
         );
 
+    }
+
+    async GetMe(req, res) {
+        let user = await this.userService.GetMeService(req.user)
+
+        return buildSuccessResponse(
+            res,
+            "fetched user successfuly",
+            StatusCodes.OK,
+            user
+        );
+
+    }
+
+    async RefreshTokenController(req, res) {
+        let accessToken = await this.userService.RefreshTokenService(req.cookies)
+
+         res.cookie('accessToken', accessToken, app_config.cookie.accessToken)
+
+        return buildSuccessResponse(
+            res,
+            "accessToken fetched successfuly",
+            StatusCodes.OK,
+            accessToken
+        );
     }
 }
