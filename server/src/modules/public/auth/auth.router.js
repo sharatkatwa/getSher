@@ -1,6 +1,7 @@
 import express from 'express'
 import AuthController from './auth.controller.js'
 import passport from 'passport'
+import { asyncHandler } from '../../../shared/utils/asyncHandler.js'
 
 const router = express.Router()
 const authController = new AuthController()
@@ -19,6 +20,10 @@ router.get('/google/callback',
     //      res.json({ token });
     //    }
      );
+
+router.post("/register",asyncHandler(authController.Register.bind(authController)))     
+
+router.post("/login",asyncHandler(authController.Login.bind(authController)))     
 
 export default router
 
