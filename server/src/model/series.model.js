@@ -1,4 +1,5 @@
 import { model, Schema } from "mongoose";
+import { SERIES_STATUS } from "../constants/model.constant.js";
 const seriesSchema = new Schema(
   {
     name: { type: String, required: true, trim: true, unique: true },
@@ -6,7 +7,7 @@ const seriesSchema = new Schema(
     season: { type: String, required: true, trim: true, unique: true },
     status: {
       type: String,
-      enum: ["UPCOMING", "LIVE", "COMPLETED"],
+      enum: Object.values(SERIES_STATUS),
       default: "UPCOMING",
     },
     logo: String,
