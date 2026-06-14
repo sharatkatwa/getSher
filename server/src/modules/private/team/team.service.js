@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import PlayerRepo from "../../../repository/player.repository.js";
 import TeamRepo from "../../../repository/team.repository.js";
 import {
@@ -11,8 +12,10 @@ export default class TeamService {
     this.playerRepo = new PlayerRepo();
   }
 
-  async createTeam(team) {
-    return await this.teamRepo.create(team);
+  // Team create service
+  async createTeam(team, userId) {
+    const data = { ...team, createdBy: userId };
+    return await this.teamRepo.create(data);
   }
   async updateTeam(id, payload) {
     const team = await this.teamRepo.findById(id);
