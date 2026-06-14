@@ -34,7 +34,7 @@ export default function createApp() {
   });
 
   app.use("/api/auth", authRouter);
-  app.use("/api/private/series", privateSeriesRouter);
+  app.use("/api/series", privateSeriesRouter);
   app.use("/api/series", publicSeriesRouter);
 
   app.use(notFound);
