@@ -8,21 +8,14 @@ export default class TeamController {
   }
 
   async createTeam(req, res) {
-    const payload = {
-      name: req.body.name,
-      shortName: req.body.shortName,
-      logo: req.body.logo,
-      primaryColor: req.body.primaryColor,
-      createdBy: req.user._id,
-    };
-
-    const team = await this.teamService.createTeam(payload);
+    const team = await this.teamService.createTeam(req.body, req.user.id);
 
     // buildResponse for sending success response
     return buildSuccessResponse(
       res,
       "Team Created Successfully",
       StatusCodes.CREATED.data,
+      team
     );
   }
 
@@ -40,7 +33,6 @@ export default class TeamController {
   }
 
   async deleteTeam(req, res) {
-    
     await this.teamService.deleteTeam(req.params.id);
     return buildSuccessResponse(res, "team deleted successfully");
   }

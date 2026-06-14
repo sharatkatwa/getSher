@@ -5,6 +5,8 @@ import {
   authenticateMiddleware,
   authorizeRole,
 } from "../../../middlewares/auth.middleware.js";
+import { teamValidator } from "./team.validator.js";
+import { validateErrors } from "../../../middlewares/validate.middleware.js";
 
 const router = express.Router();
 const teamController = new TeamController();
@@ -13,6 +15,8 @@ router.post(
   "/",
   authenticateMiddleware,
   authorizeRole(["ADMIN", "SUPER_ADMIN"]),
+  teamValidator,
+  validateErrors,
   asyncHandler(teamController.createTeam.bind(teamController)),
 );
 
@@ -20,6 +24,8 @@ router.patch(
   "/:id",
   authenticateMiddleware,
   authorizeRole(["ADMIN", "SUPER_ADMIN"]),
+  teamValidator,
+  validateErrors,
   asyncHandler(teamController.updateTeam.bind(teamController)),
 );
 
@@ -45,4 +51,4 @@ router.delete(
   asyncHandler(teamController.removePlayerFromSquad.bind(teamController)),
 );
 
-export default router
+export default router;
