@@ -5,6 +5,11 @@ import env from '../config/env.js'
 export const authenticateMiddleware = (req,res,next) =>{
     try {
         const token =  req.cookies.accessToken
+
+        if (!token) {
+            throw new UnauthorizedError("Token not found")
+        }
+
         const payload = jwt.verify(token,env.ACCESS_TOKEN_SECRET)
         req.user = payload
         

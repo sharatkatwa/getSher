@@ -8,7 +8,6 @@ export default {
   GOOGLE_CALLBACK_URL: 'api/auth/google/callback'
 };
 
-
 export const app_config = {
   jwt:{
     accessToken:{expiresIn:'1H'},

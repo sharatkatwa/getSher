@@ -1,5 +1,5 @@
 import express from "express";
-import env from "./config/env.js"
+import env from "./config/env.js";
 import morgan from "morgan";
 
 // middleware import statements
@@ -13,34 +13,35 @@ import authRoutes from './modules/public/auth/auth.router.js'
 import privateTeamRoutes from './modules/private/team/team.route.js'
 import publicTeamRoutes from './modules/public/team/team.route.js'
 
-
+// routes import statements for private and public series statement
+import privateSeriesRouter from "./modules/private/series/series.router.js";
+import publicSeriesRouter from "./modules/public/series/series.router.js";
 
 export default function createApp() {
-  const app = express(); 
+  const app = express();
 
-  googleOAuthMiddleware(app)
+  googleOAuthMiddleware(app);
 
   if (env.NODE_ENV === "development") {
-  
     app.use(morgan("dev"));
   }
-  
+
   // all middlewares related to security can found here
-  securityMiddleware(app)
+  securityMiddleware(app);
 
 // to check the api status
   app.get("/health", (req, res) => {
     res.json({
       message: "api is healthy",
     });
-  });  
+  });
 
   app.use('/api/auth',authRoutes)
   app.use('/api/team',privateTeamRoutes)
   app.use('/api/team',publicTeamRoutes)
 
-  app.use(notFound)
-  app.use(ErrorHandler)
+  app.use(notFound);
+  app.use(ErrorHandler);
 
   return app;
 }
