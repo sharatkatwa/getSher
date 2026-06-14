@@ -3,6 +3,13 @@ export const ROLES = {
     ADMIN: "ADMIN",
     SCORER: "SCORER",
 }
+
+export const PLAYER_ROLES = {
+  BATSMAN: "BATSMAN",
+  BOWLER: "BOWLER",
+  ALL_ROUNDER: "ALL_ROUNDER",
+  WICKET_KEEPER: "WICKET_KEEPER",
+}
 export const MATCH_STATUS = {
   UPCOMING: "UPCOMING",
   LIVE: "LIVE",

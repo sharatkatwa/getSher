@@ -9,7 +9,9 @@ import googleOAuthMiddleware from "./middlewares/googleOAuth.middleware.js";
 import notFound from "./middlewares/notFound.middleware.js";
 
 // routes import statements
-import authRouter from "./modules/public/auth/auth.router.js";
+import authRoutes from './modules/public/auth/auth.router.js'
+import privateTeamRoutes from './modules/private/team/team.route.js'
+import publicTeamRoutes from './modules/public/team/team.route.js'
 
 // routes import statements for private and public series statement
 import privateSeriesRouter from "./modules/private/series/series.router.js";
@@ -27,6 +29,7 @@ export default function createApp() {
   // all middlewares related to security can found here
   securityMiddleware(app);
 
+// to check the api status
   app.get("/health", (req, res) => {
     res.json({
       message: "api is healthy",

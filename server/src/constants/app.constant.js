@@ -5,7 +5,7 @@ export default {
   NODE_ENV: "development",
   RATELIMIT_WINDOWMS: 15 * 60 * 1000,
   RATELIMIT: 100,
-  GOOGLE_CALLBACK_URL: '/auth/google/callback'
+  GOOGLE_CALLBACK_URL: 'api/auth/google/callback'
 };
 
 export const app_config = {

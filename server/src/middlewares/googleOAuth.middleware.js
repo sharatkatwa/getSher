@@ -18,6 +18,7 @@ export default function googleOAuthMiddleware(app) {
             (accessToken, refreshToken, profile, done) => {
                 // Here, you would typically find or create a user in your database
                 // For this example, we'll just return the profile
+                
                 return done(null, profile);
             }
         )
