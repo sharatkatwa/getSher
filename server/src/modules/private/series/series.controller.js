@@ -18,28 +18,6 @@ export default class SeriesController {
     );
   }
 
-  async getAllSeries(req, res) {
-    const series = await this.seriesService.getAllSeries();
-
-    return buildSuccessResponse(
-      res,
-      "Series fetched successfully",
-      StatusCodes.OK,
-      series,
-    );
-  }
-
-  async getSeriesById(req, res) {
-    const series = await this.seriesService.getAllSeriesById(req.params.id);
-
-    return buildSuccessResponse(
-      res,
-      "Series fetched successfully",
-      StatusCodes.OK,
-      series,
-    );
-  }
-
   async updateSeries(req, res) {
     const series = await this.seriesService.updateSeries(
       req.params.id,

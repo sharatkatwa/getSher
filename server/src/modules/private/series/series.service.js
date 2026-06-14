@@ -24,59 +24,31 @@ export default class SeriesService {
     return await this.seriesRepo.create(payload);
   }
 
-  async getAllSeries() {
-    return await this.seriesRepo.findAll();
-  }
-
-  async getAllSeriesById(id) {
+  async updateSeries(id, payload) {
     const series = await this.seriesRepo.findById(id);
 
     if (!series) {
       throw new NotFoundError("Series not found");
     }
 
-    return series;
-  }
+    if (payload.name) {
+      const existing = await this.seriesRepo.findByName(payload.name);
 
-  async updateSeries(id, payload) {
-  const series = await this.seriesRepo.findById(id);
-
-  if (!series) {
-    throw new NotFoundError("Series not found");
-  }
-
-  if (payload.name) {
-    const existing =
-      await this.seriesRepo.findByName(payload.name);
-
-    if (
-      existing &&
-      existing._id.toString() !== id
-    ) {
-      throw new ConflictError(
-        "Series name already exists"
-      );
+      if (existing && existing._id.toString() !== id) {
+        throw new ConflictError("Series name already exists");
+      }
     }
-  }
 
-  if (payload.season) {
-    const existingSeason =
-      await this.seriesRepo.findBySeason(
-        payload.season
-      );
+    if (payload.season) {
+      const existingSeason = await this.seriesRepo.findBySeason(payload.season);
 
-    if (
-      existingSeason &&
-      existingSeason._id.toString() !== id
-    ) {
-      throw new ConflictError(
-        "Season already exists"
-      );
+      if (existingSeason && existingSeason._id.toString() !== id) {
+        throw new ConflictError("Season already exists");
+      }
     }
-  }
 
-  return await this.seriesRepo.update(id, payload);
-}
+    return await this.seriesRepo.update(id, payload);
+  }
 
   async deleteSeries(id) {
     const series = await this.seriesRepo.findById(id);
