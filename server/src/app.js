@@ -36,15 +36,9 @@ export default function createApp() {
     });
   });
 
-<<<<<<< HEAD
-  app.use('/api/auth',authRoutes)
-  app.use('/api/team',privateTeamRoutes)
-  app.use('/api/team',publicTeamRoutes)
-=======
   app.use("/api/auth", authRouter);
   app.use("/api/series", privateSeriesRouter);
   app.use("/api/series", publicSeriesRouter);
->>>>>>> 9f35055c626c6c8d19bef2cc4cd569d2a8b85573
 
   app.use(notFound);
   app.use(ErrorHandler);
