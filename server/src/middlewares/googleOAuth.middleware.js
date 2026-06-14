@@ -5,6 +5,7 @@ import env from '../config/env.js'
 
 
 export default function googleOAuthMiddleware(app) {
+    console.log("ENV CALLBACK:", env.GOOGLE_CALLBACK_URL);
     app.use(passport.initialize());
 
     // Configure Passport to use Google OAuth 2.0 strategy
@@ -16,8 +17,7 @@ export default function googleOAuthMiddleware(app) {
                 callbackURL: env.GOOGLE_CALLBACK_URL,
             },
             (accessToken, refreshToken, profile, done) => {
-                // Here, you would typically find or create a user in your database
-                // For this example, we'll just return the profile
+                // console.log(profile)
                 return done(null, profile);
             }
         )

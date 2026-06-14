@@ -16,6 +16,7 @@ const envSchema = z.object({
   REDIRCT_URL: z.string(),
   REFRESH_TOKEN_SECRET:z.string(),
   ACCESS_TOKEN_SECRET:z.string(),
+  GOOGLE_CALLBACK_URL : z.string().default(appConstant.GOOGLE_CALLBACK_URL)
 });
 
 const parsed = envSchema.safeParse(process.env);

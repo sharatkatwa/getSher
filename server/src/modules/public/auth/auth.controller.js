@@ -11,6 +11,8 @@ export default class AuthController {
     }
 
     async GoogleCallBack(req, res) {
+        // console.log(req.user);
+        
 
         const { accessToken, refreshToken } = await this.userService.CreateUser(req.user)
 
