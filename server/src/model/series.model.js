@@ -1,18 +1,22 @@
-import mongoose from "mongoose";
-
-const seriesSchema = new mongoose.Schema(
+import { model, Schema } from "mongoose";
+const seriesSchema = new Schema(
   {
-    name: { type: String, required: true, trim: true },
-    description: { type: String, trim: true },
-    startDate: { type: Date },
-    endDate: { type: Date },
-    isDeleted: { type: Boolean, default: false }
+    name: { type: String, required: true, trim: true, unique: true },
+    shortName: { type: String, required: true, trim: true },
+    season: { type: String, required: true, trim: true, unique: true },
+    status: {
+      type: String,
+      enum: ["UPCOMING", "LIVE", "COMPLETED"],
+      default: "UPCOMING",
+    },
+    logo: String,
+    isDeleted: { type: Boolean, default: false },
+    createdBy: { type: Schema.Types.ObjectId, ref: "User" },
+    updatedBy: { type: Schema.Types.ObjectId, ref: "User" },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-// Basic index for listing active series
-seriesSchema.index({ isDeleted: 1, createdAt: -1 });
+const seriesModel = model("Series", seriesSchema);
 
-const Series = mongoose.model("Series", seriesSchema);
-export default Series;
+export default seriesModel;
