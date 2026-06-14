@@ -3,3 +3,9 @@ export const ROLES = {
     ADMIN: "ADMIN",
     SCORER: "SCORER",
 }
+export const MATCH_STATUS = {
+  UPCOMING: "UPCOMING",
+  LIVE: "LIVE",
+  COMPLETED: "COMPLETED",
+  ABANDONED: "ABANDONED"
+};
