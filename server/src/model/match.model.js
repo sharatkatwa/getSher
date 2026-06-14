@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { MATCH_STATUS } from "../constants/match.constants.js";
+import { MATCH_STATUS } from "../constants/model.constant.js";
 
 const { Schema } = mongoose;
 
@@ -14,7 +14,7 @@ const playingPlayerSchema = new Schema(
 
 const matchSchema = new Schema(
   {
-    seriesId: { type: Schema.Types.ObjectId, ref: "Series", required: true },
+    seriesId: { type: Schema.Types.ObjectId, ref: "series", required: true },
     matchNumber: String,
     venue: { type: String, required: true, trim: true },
     startTime: { type: Date, required: true },
@@ -23,19 +23,19 @@ const matchSchema = new Schema(
       enum: Object.values(MATCH_STATUS),
       default: MATCH_STATUS.UPCOMING,
     },
-    team1: { type: Schema.Types.ObjectId, ref: "Team", required: true },
-    team2: { type: Schema.Types.ObjectId, ref: "Team", required: true },
-    tossWinner: { type: Schema.Types.ObjectId, ref: "Team" },
+    team1: { type: Schema.Types.ObjectId, ref: "team", required: true },
+    team2: { type: Schema.Types.ObjectId, ref: "team", required: true },
+    tossWinner: { type: Schema.Types.ObjectId, ref: "team" },
     tossDecision: { type: String, enum: ["BAT", "BOWL"] },
     playingXI: {
       team1: [playingPlayerSchema],
       team2: [playingPlayerSchema],
     },
-    winner: { type: Schema.Types.ObjectId, ref: "Team" },
+    winner: { type: Schema.Types.ObjectId, ref: "team" },
     result: String,
     isDeleted: { type: Boolean, default: false },
-    createdBy: { type: Schema.Types.ObjectId, ref: "User" },
-    updatedBy: { type: Schema.Types.ObjectId, ref: "User" },
+    createdBy: { type: Schema.Types.ObjectId, ref: "user" },
+    updatedBy: { type: Schema.Types.ObjectId, ref: "user" },
   },
   { timestamps: true },
 );
