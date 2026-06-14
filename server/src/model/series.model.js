@@ -11,8 +11,8 @@ const seriesSchema = new Schema(
     },
     logo: String,
     isDeleted: { type: Boolean, default: false },
-    createdBy: { type: Schema.Types.ObjectId, ref: "User" },
-    updatedBy: { type: Schema.Types.ObjectId, ref: "User" },
+    createdBy: { type: Schema.Types.ObjectId, ref: "user" },
+    updatedBy: { type: Schema.Types.ObjectId, ref: "user" },
   },
   { timestamps: true },
 );
