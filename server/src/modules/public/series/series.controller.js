@@ -1,4 +1,6 @@
+import { StatusCodes } from "http-status-codes";
 import PublicSeriesService from "./series.service.js";
+import { buildSuccessResponse } from "../../../shared/utils/buildSuccessResponse.js";
 
 export default class PublicSeriesController {
   constructor() {
@@ -8,11 +10,21 @@ export default class PublicSeriesController {
   async getSeries(req, res) {
     const data = await this.seriesService.getSeries();
 
-    res.json({ data });
+    return buildSuccessResponse(
+      res,
+      "Series fetched successfully",
+      StatusCodes.OK,
+      data,
+    );
   }
 
   async getSeriesDetails(req, res) {
     const data = await this.seriesService.getSeriesDetails(req.params.id);
-    res.json({ data });
+    return buildSuccessResponse(
+      res,
+      "Series details fetched successfully",
+      StatusCodes.OK,
+      data,
+    );
   }
 }
