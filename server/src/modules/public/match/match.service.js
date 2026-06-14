@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import matchRepository from "../../../repository/match.repository.js";
-import { MATCH_STATUS } from "../../../constants/match.constants.js";
+import { MATCH_STATUS } from "../../../constants/model.constant.js";
 import {
   NotFoundError,
   ValidationError,
