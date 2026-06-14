@@ -7,8 +7,6 @@ import ErrorHandler from "./middlewares/errorHandler.middleware.js";
 import securityMiddleware from "./middlewares/security.middleware.js";
 import googleOAuthMiddleware from "./middlewares/googleOAuth.middleware.js";
 import notFound from "./middlewares/notFound.middleware.js";
-
->>>>>>> ead4760 (feat: series featues completed from my side)
 // routes import statements
 import authRouter from "./modules/public/auth/auth.router.js";
 import publicMatchRouter from "./modules/public/match/match.router.js";
