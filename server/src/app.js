@@ -9,7 +9,7 @@ import googleOAuthMiddleware from "./middlewares/googleOAuth.middleware.js";
 import notFound from "./middlewares/notFound.middleware.js";
 
 // routes import statements
-import authRouter from './modules/public/auth/auth.router.js'
+import authRoutes from './modules/public/auth/auth.router.js'
 import privateTeamRoutes from './modules/private/team/team.route.js'
 import publicTeamRoutes from './modules/public/team/team.route.js'
 
@@ -28,13 +28,14 @@ export default function createApp() {
   // all middlewares related to security can found here
   securityMiddleware(app)
 
+// to check the api status
   app.get("/health", (req, res) => {
     res.json({
       message: "api is healthy",
     });
   });  
 
-  app.use('/api/auth',authRouter)
+  app.use('/api/auth',authRoutes)
   app.use('/api/team',privateTeamRoutes)
   app.use('/api/team',publicTeamRoutes)
 

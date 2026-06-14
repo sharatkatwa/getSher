@@ -4,7 +4,7 @@ import TeamService from "./team.service.js";
 
 export default class TeamController {
   constructor() {
-    this.teamService = new TeamService
+    this.teamService = new TeamService()
   }
 
   async getAllTeam(req, res) {
@@ -16,5 +16,8 @@ export default class TeamController {
     buildSuccessResponse(res,'team fetched successfully', StatusCodes.OK,team)
   }
 
-  async getTeamSquad(req, res) {}
+  async getTeamSquad(req, res) {
+    const squad = await this.teamService.getSquad(req.params.teamId)
+    buildSuccessResponse(res,"squad fetched successfully", StatusCodes.OK, squad)
+  }
 }

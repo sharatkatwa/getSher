@@ -18,8 +18,8 @@ export default class TeamController {
 
     const team = await this.teamService.createTeam(payload);
 
-    // buildResponse function used to send response
-    buildSuccessResponse(
+    // buildResponse for sending success response
+    return buildSuccessResponse(
       res,
       "Team Created Successfully",
       StatusCodes.CREATED.data,
@@ -31,38 +31,40 @@ export default class TeamController {
     const payload = req.body;
     const updatedTeam = await this.teamService.updateTeam(id, payload);
 
-    buildSuccessResponse(
+    return buildSuccessResponse(
       res,
       "Team updated successfully",
       StatusCodes.OK,
       updatedTeam,
     );
   }
-  
+
   async deleteTeam(req, res) {
-    await teamService.deleteTeam(req.params.id);
+    
+    await this.teamService.deleteTeam(req.params.id);
+    return buildSuccessResponse(res, "team deleted successfully");
   }
 
-// add and remove SQUAD controllers
+  // add and remove SQUAD controllers
   async addPlayerToSquad(req, res) {
     const team = await this.teamService.addPlayerToSquad(
       req.body.playerId,
       req.params.teamId,
     );
 
-    buildSuccessResponse(
+    return buildSuccessResponse(
       res,
       "player added successfully in the team",
       StatusCodes.OK,
       team,
     );
   }
-  
+
   async removePlayerFromSquad(req, res) {
     const { playerId, teamId } = req.params;
     const team = await this.teamService.removePlayerFromSquad(playerId, teamId);
 
-    buildSuccessResponse(
+    return buildSuccessResponse(
       res,
       "player removed successfully in the team",
       StatusCodes.OK,
