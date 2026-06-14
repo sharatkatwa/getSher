@@ -3,7 +3,6 @@ export const ROLES = {
     ADMIN: "ADMIN",
     SCORER: "SCORER",
 }
-<<<<<<< HEAD
 
 export const PLAYER_ROLES = {
   BATSMAN: "BATSMAN",
@@ -11,11 +10,9 @@ export const PLAYER_ROLES = {
   ALL_ROUNDER: "ALL_ROUNDER",
   WICKET_KEEPER: "WICKET_KEEPER",
 }
-=======
 export const MATCH_STATUS = {
   UPCOMING: "UPCOMING",
   LIVE: "LIVE",
   COMPLETED: "COMPLETED",
   ABANDONED: "ABANDONED"
 };
->>>>>>> 143eaed521d16741c1151ba69f75c2e5028f1607
