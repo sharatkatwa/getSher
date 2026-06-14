@@ -5,6 +5,11 @@ import env from '../config/env.js'
 export const authenticateMiddleware = (req,res,next) =>{
     try {
         const token =  req.cookies.accessToken
+
+        if (!token) {
+            throw new UnauthorizedError("Token not found")
+        }
+
         const payload = jwt.verify(token,env.ACCESS_TOKEN_SECRET)
         req.user = payload
         
@@ -12,7 +17,7 @@ export const authenticateMiddleware = (req,res,next) =>{
     } catch (error) {
         if(error.name === 'TokenExpiredError')
             throw new UnauthorizedError('Access token expired!')
-        throw new UnauthorizedError('TOken not found')
+        throw new UnauthorizedError('Token not found')
     }
 }
 

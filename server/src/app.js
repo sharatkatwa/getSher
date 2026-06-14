@@ -10,7 +10,8 @@ import notFound from "./middlewares/notFound.middleware.js";
 
 // routes import statements
 import authRouter from './modules/public/auth/auth.router.js'
-
+import publicMatchRouter from "./modules/public/match/match.router.js";
+import privateMatchRouter from "./modules/private/match/match.route.js";
 
 
 export default function createApp() {
@@ -32,7 +33,11 @@ export default function createApp() {
     });
   });  
 
+
   app.use('/api/auth',authRouter)
+
+  app.use("/api/matches", publicMatchRouter);
+  app.use("/api/matches", privateMatchRouter);
 
   app.use(notFound)
   app.use(ErrorHandler)
