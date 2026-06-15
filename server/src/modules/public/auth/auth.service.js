@@ -13,25 +13,39 @@ export default class AuthService {
    }
 
    async CreateUser(user) {
-      const isUserPresent = await this.userRepo.findByEmail(user.emails[0].value)
-      let result = isUserPresent;
 
-      if (!isUserPresent) {
-         const _user = await this.userRepo.create({
-            email: user.emails[0].value,
-            picture: user.photos[0].value,
+      if (!user) {
+         throw new ValidationError("User data not received from Google");
+      }
+
+      if (!user.emails?.length) {
+         throw new ValidationError("Email not provided by Google");
+      }
+
+      if (!user.displayName) {
+         throw new ValidationError("Display name not provided by Google");
+      }
+
+      const email = user.emails[0].value;
+      const picture = user.photos?.[0]?.value || "";
+      
+      let result = await this.userRepo.findByEmail(email);
+
+      if (!result) {
+         result = await this.userRepo.create({
+            email,
+            picture,
             name: user.displayName
-         })
-         result = _user
+         });
       }
 
-      let data = {
+      const data = {
          id: result._id,
-         email: user.emails[0].value,
-         picture: user.photos[0].value,
+         email: result.email,
+         picture: result.picture,
          role: result.role,
-         name: user.displayName
-      }
+         name: result.name
+      };
 
       const refreshToken = jwt.sign(data, env.REFRESH_TOKEN_SECRET, app_config.jwt.refreshToken)
 
@@ -153,6 +167,12 @@ export default class AuthService {
       const accessToken = jwt.sign(userInfoForToken, env.ACCESS_TOKEN_SECRET, app_config.jwt.accessToken)
 
       return accessToken
+
+   }
+
+   async LogoutService(data) {
+      let { accessToken, refreshToken } = data
+
 
    }
 }
