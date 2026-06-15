@@ -1,6 +1,7 @@
 import axios from "axios";
 import { VITE_API_URL } from "../utils/env";
 
+// Shared API client for future TanStack Query hooks and mutations.
 const api = axios.create({
   baseURL: VITE_API_URL,
   withCredentials: true,

@@ -14,14 +14,14 @@ export default class TeamService {
   async getTeamById(id) {
     if (!mongoose.Types.ObjectId.isValid(id))
       throw new ValidationError("invalid teamId");
-      
+
     return await this.teamRepo.findById(id);
   }
 
   async getSquad(id) {
     if (!mongoose.Types.ObjectId.isValid(id))
       throw new ValidationError("invalid teamId");
-      
-    return await this.teamRepo.getSquad();
+
+    return await this.teamRepo.getSquad(id);
   }
 }

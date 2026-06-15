@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// Stores the authenticated user snapshot after login/me requests.
 const userSlice = createSlice({
   name: "user",
   initialState: {
