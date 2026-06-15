@@ -5,6 +5,7 @@ import AppLayout from "./layout/AppLayout";
 import Home from "./pages/public/Home";
 import Login from "./pages/public/Login";
 import AdminHome from "./pages/private/AdminHome";
+import Players from "./pages/public/Players";
 
 const AppRoutes = () => {
   const router = createBrowserRouter([
@@ -19,6 +20,10 @@ const AppRoutes = () => {
         {
           path: "/login",
           element: <Login />,
+        },
+        {
+          path: "/players",
+          element: <Players />,
         },
       ],
     },
