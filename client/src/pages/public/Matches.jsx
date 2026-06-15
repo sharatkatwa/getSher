@@ -3,6 +3,7 @@ import PageHeader from "../../components/shared/PageHeader";
 import StatusPill from "../../components/shared/StatusPill";
 import TeamBadge from "../../components/home/TeamBadge";
 
+// Static preview data; replace with useMatches() once API integration is enabled.
 const matches = [
   {
     title: "India vs Australia",

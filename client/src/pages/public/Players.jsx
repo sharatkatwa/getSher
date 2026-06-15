@@ -3,6 +3,7 @@ import PageHeader from "../../components/shared/PageHeader";
 import StatBadge from "../../components/shared/StatBadge";
 import StatusPill from "../../components/shared/StatusPill";
 
+// Static preview data; replace with usePlayers() once API integration is enabled.
 const players = [
   {
     name: "Virat Kohli",

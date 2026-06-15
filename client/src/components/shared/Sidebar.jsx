@@ -14,6 +14,7 @@ const bottomItems = [
   { label: "Support", icon: "help" },
 ];
 
+// Shared by desktop sidebar and mobile drawer so navigation stays identical.
 const SidebarContent = ({ onNavigate }) => {
   return (
     <>
@@ -78,6 +79,7 @@ const Sidebar = ({ isOpen = false, onClose }) => {
       </aside>
 
       <div
+        // Mobile backdrop closes the drawer without affecting desktop layout.
         className={`fixed inset-0 z-30 bg-black/40 backdrop-blur-sm transition-opacity lg:hidden ${
           isOpen ? "opacity-100" : "pointer-events-none opacity-0"
         }`}

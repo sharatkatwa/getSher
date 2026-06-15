@@ -3,6 +3,7 @@ import AdminTable from "../../components/admin/AdminTable";
 import PageHeader from "../../components/shared/PageHeader";
 import StatusPill from "../../components/shared/StatusPill";
 
+// Static dashboard metrics until admin summary endpoints are connected.
 const metrics = [
   { icon: "refresh", label: "Players", value: "128", helper: "18 recently updated profiles" },
   { icon: "teams", label: "Teams", value: "12", helper: "4 squads need final review" },

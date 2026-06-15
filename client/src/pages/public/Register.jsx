@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import AuthFormCard from "../../components/auth/AuthFormCard";
 import AuthShell from "../../components/auth/AuthShell";
 
+// Static registration screen; form behavior can be connected when auth API flow is ready.
 const Register = () => {
   return (
     <AuthShell
