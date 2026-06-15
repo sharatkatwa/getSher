@@ -11,6 +11,7 @@ const envSchema = z.object({
   CORS_ORIGIN: z.string(),
   RATELIMIT_WINDOWMS: z.coerce.number().default(appConstant.RATELIMIT_WINDOWMS),
   RATELIMIT: z.coerce.number().default(appConstant.RATELIMIT),
+  GOOGLE_CALLBACK_URL:z.string().default(appConstant.GOOGLE_CALLBACK_URL),
   GOOGLE_CLIENT_ID: z.string(),
   GOOGLE_CLIENT_SECRET: z.string(),
   REDIRCT_URL: z.string(),

@@ -1,12 +1,12 @@
-import {StatusCodes} from  'http-status-codes'
+import { StatusCodes } from "http-status-codes";
 
-const ErrorHandler  = (err,req, res, next)=>{
+const ErrorHandler = (err, req, res, next) => {
+  const errorResponse = { success: false };
+  if (err.details) errorResponse.details = err.details;
+  if (err.message) errorResponse.message = err.message;
+  res
+    .status(err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
+    .json(errorResponse);
+};
 
-    res.status(err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR).json({
-        message:err.message || 'internal server error',
-        success:false
-    })
-    
-}
-
-export default ErrorHandler
+export default ErrorHandler;
