@@ -11,6 +11,5 @@ export const validateErrors = (req, res, next) => {
       throw new ValidationError("Invalid Request", errorMessages.join(' | '))
 
     }
-    
     next()
 };
