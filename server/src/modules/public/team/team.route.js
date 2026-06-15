@@ -8,13 +8,13 @@ const teamController = new TeamController();
 router.get("/", asyncHandler(teamController.getAllTeam.bind(teamController)));
 
 router.get(
-  "/:id",
-  asyncHandler(teamController.getTeamById.bind(teamController)),
-);
-
-router.get(
   "/:teamId/squad",
   asyncHandler(teamController.getTeamSquad.bind(teamController)),
 );
 
-export default router
+router.get(
+  "/:id",
+  asyncHandler(teamController.getTeamById.bind(teamController)),
+);
+
+export default router;
