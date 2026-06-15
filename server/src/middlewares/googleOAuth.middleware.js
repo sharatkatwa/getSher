@@ -5,7 +5,7 @@ import env from '../config/env.js'
 
 
 export default function googleOAuthMiddleware(app) {
-    console.log("ENV CALLBACK:", env.GOOGLE_CALLBACK_URL);
+    // console.log("ENV CALLBACK:", env.GOOGLE_CALLBACK_URL);
     app.use(passport.initialize());
 
     // Configure Passport to use Google OAuth 2.0 strategy
