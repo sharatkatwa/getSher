@@ -5,6 +5,8 @@ import {
   authenticateMiddleware,
   authorizeRole,
 } from "../../../middlewares/auth.middleware.js";
+import { seriesValidator } from "./series.validator.js";
+import { validateErrors } from "../../../middlewares/validate.middleware.js";
 
 const router = express.Router();
 
@@ -14,6 +16,8 @@ router.post(
   "/",
   authenticateMiddleware,
   authorizeRole(["ADMIN", "SUPER_ADMIN"]),
+  seriesValidator,
+  validateErrors,
   asyncHandler(controller.createSeries.bind(controller)),
 );
 
@@ -21,13 +25,15 @@ router.patch(
   "/:id",
   authenticateMiddleware,
   authorizeRole(["ADMIN", "SUPER_ADMIN"]),
+  seriesValidator,
+  validateErrors,
   asyncHandler(controller.updateSeries.bind(controller)),
 );
 
 router.delete(
   "/:id",
   authenticateMiddleware,
-   authorizeRole(["ADMIN", "SUPER_ADMIN"]),
+  authorizeRole(["ADMIN", "SUPER_ADMIN"]),
   asyncHandler(controller.deleteSeries.bind(controller)),
 );
 
