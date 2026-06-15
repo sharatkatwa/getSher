@@ -2,6 +2,7 @@ import AdminActionButton from "../../components/admin/AdminActionButton";
 import PageHeader from "../../components/shared/PageHeader";
 import StatusPill from "../../components/shared/StatusPill";
 
+// Static lineup slots; replace with match playing-XI data when the API is connected.
 const teamOne = ["Rohit Sharma", "Yashasvi Jaiswal", "Shubman Gill", "Virat Kohli", "Ravindra Jadeja", "KL Rahul"];
 const teamTwo = ["Usman Khawaja", "Marnus Labuschagne", "Steve Smith", "Travis Head", "Alex Carey", "Pat Cummins"];
 

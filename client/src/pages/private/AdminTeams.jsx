@@ -4,6 +4,7 @@ import AdminToolbar from "../../components/admin/AdminToolbar";
 import PageHeader from "../../components/shared/PageHeader";
 import StatusPill from "../../components/shared/StatusPill";
 
+// Static table rows; later this page should use team queries and admin mutations.
 const teams = [
   { id: 1, name: "India", shortName: "IND", players: 18, color: "Blue", status: "Published" },
   { id: 2, name: "Australia", shortName: "AUS", players: 17, color: "Green", status: "Published" },

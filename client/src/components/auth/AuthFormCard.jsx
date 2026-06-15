@@ -7,6 +7,7 @@ const AuthFormCard = ({ mode }) => {
   const isRegister = mode === "register";
 
   return (
+    // Static UI only for now; API submission can be added here later.
     <form className="grid gap-md">
       <GoogleAuthButton>{isRegister ? "Sign up with Google" : "Login with Google"}</GoogleAuthButton>
       <AuthDivider />

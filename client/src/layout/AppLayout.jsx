@@ -4,6 +4,7 @@ import Sidebar from "../components/shared/Sidebar";
 import TopBar from "../components/shared/TopBar";
 
 const AppLayout = () => {
+  // Local state keeps the mobile drawer isolated to this layout.
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (

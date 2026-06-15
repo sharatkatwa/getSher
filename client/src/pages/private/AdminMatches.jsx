@@ -4,6 +4,7 @@ import AdminToolbar from "../../components/admin/AdminToolbar";
 import PageHeader from "../../components/shared/PageHeader";
 import StatusPill from "../../components/shared/StatusPill";
 
+// Static table rows; later this page should use match queries and mutations.
 const matches = [
   { id: 1, match: "India vs Australia", series: "BGT", venue: "MCG", startTime: "Today 16:30", status: "LIVE" },
   { id: 2, match: "England vs South Africa", series: "ENG Tour", venue: "Cape Town", startTime: "Today 18:00", status: "LIVE" },

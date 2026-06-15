@@ -15,6 +15,7 @@ const utilityItems = [
   { label: "Settings", icon: "settings", to: "/admin/settings" },
 ];
 
+// Shared by desktop admin sidebar and mobile admin drawer.
 const AdminSidebarContent = ({ onNavigate }) => {
   return (
     <>

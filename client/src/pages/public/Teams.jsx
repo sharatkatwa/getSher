@@ -3,6 +3,7 @@ import StatBadge from "../../components/shared/StatBadge";
 import StatusPill from "../../components/shared/StatusPill";
 import TeamBadge from "../../components/home/TeamBadge";
 
+// Static preview data; replace with useTeams() once API integration is enabled.
 const teams = [
   { code: "IND", name: "India", shortName: "IND", players: 18, color: "Blue", form: "W W L W" },
   { code: "AUS", name: "Australia", shortName: "AUS", players: 17, color: "Green", form: "W L W W" },

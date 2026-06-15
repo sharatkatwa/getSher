@@ -4,6 +4,7 @@ import AdminSidebar from "../components/shared/AdminSidebar";
 import AdminTopBar from "../components/shared/AdminTopBar";
 
 const AdminLayout = () => {
+  // Admin has its own drawer state so public/admin shells do not affect each other.
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (

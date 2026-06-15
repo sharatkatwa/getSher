@@ -19,6 +19,7 @@ import AdminTeams from "./pages/private/AdminTeams";
 
 const AppRoutes = () => {
   const router = createBrowserRouter([
+    // Public routes share the fan-facing shell and navigation.
     {
       path: "",
       element: <AppLayout />,
@@ -53,6 +54,7 @@ const AppRoutes = () => {
         },
       ],
     },
+    // Admin routes use a separate operations shell with admin navigation.
     {
       path: "/admin",
       element: <AdminLayout />,

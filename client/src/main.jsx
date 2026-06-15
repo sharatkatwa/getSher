@@ -8,6 +8,7 @@ import { store } from "./lib/store.js";
 import queryClient from "./lib/queryCLient.js";
 
 createRoot(document.getElementById("root")).render(
+  // QueryClientProvider owns server cache; Redux owns app/session UI state.
   <QueryClientProvider client={queryClient}>
     <Provider store={store}>
       <AppRoutes />

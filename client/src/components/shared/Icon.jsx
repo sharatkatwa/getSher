@@ -38,6 +38,7 @@ const icons = {
   user: User,
 };
 
+// Centralizes Lucide icon usage so feature components can use stable semantic names.
 const Icon = ({ name, className = "h-5 w-5" }) => {
   const LucideIcon = icons[name] || CircleHelp;
 

@@ -4,6 +4,7 @@ import AdminToolbar from "../../components/admin/AdminToolbar";
 import PageHeader from "../../components/shared/PageHeader";
 import StatusPill from "../../components/shared/StatusPill";
 
+// Static table rows; later this page should use a players query and mutations.
 const players = [
   { id: 1, name: "Virat Kohli", role: "BATSMAN", country: "India", style: "Right hand bat", status: "Active" },
   { id: 2, name: "Pat Cummins", role: "BOWLER", country: "Australia", style: "Right arm fast", status: "Active" },
