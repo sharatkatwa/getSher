@@ -13,21 +13,26 @@ class MatchRepository {
     }
 
     return await Match.findOne(query)
-      .populate("seriesId", "name")
+      // .populate("seriesId", "name")
       .populate("team1 team2", "name logo")
       .populate("winner", "name");
   }
 
-  async findAll({ page = 1, limit = 10 } = {}) {
-    const skip = (page - 1) * limit;
+  // async findAll({ page = 1, limit = 10 } = {}) {
+  //   const skip = (page - 1) * limit;
 
-    return await Match.find({ isDeleted: false })
-      .sort({ startTime: -1 })
-      .skip(skip)
-      .limit(limit)
-      .populate("seriesId", "name")
-      .populate("team1 team2", "name logo");
-  }
+  //   return await Match.find({ isDeleted: false })
+  //     .sort({ startTime: -1 })
+  //     .skip(skip)
+  //     .limit(limit)
+  //     .populate("seriesId", "name")
+  //     .populate("team1 team2", "name logo");
+  // }
+
+
+async findAll() {
+  return [];
+}
 
   async findDuplicateMatch({ seriesId, team1, team2, startTime }) {
     return await Match.findOne({

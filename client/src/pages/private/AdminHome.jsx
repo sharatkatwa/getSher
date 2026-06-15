@@ -1,7 +1,12 @@
+import MatchList from "./MatchList"
 
 const AdminHome = () => {
   return (
-    <div>AdminHome</div>
+    <div>
+      {/* AdminHome */}
+
+      <MatchList />
+    </div>
   )
 }
 

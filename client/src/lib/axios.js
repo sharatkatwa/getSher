@@ -6,4 +6,5 @@ const api = axios.create({
   withCredentials: true,
 });
 
+console.log("API URL", VITE_API_URL)
 export default api;
