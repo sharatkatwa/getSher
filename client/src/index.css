@@ -1,1 +1,300 @@
-@import 'tailwindcss';
+@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-data), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --color-surface: var(--surface);
+  --color-surface-dim: var(--surface-dim);
+  --color-surface-bright: var(--surface-bright);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-surface-container-highest: var(--surface-container-highest);
+  --color-on-surface: var(--on-surface);
+  --color-on-surface-variant: var(--on-surface-variant);
+  --color-inverse-surface: var(--inverse-surface);
+  --color-inverse-on-surface: var(--inverse-on-surface);
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+  --color-surface-tint: var(--surface-tint);
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-primary-container: var(--primary-container);
+  --color-on-primary-container: var(--on-primary-container);
+  --color-inverse-primary: var(--inverse-primary);
+  --color-secondary: var(--secondary);
+  --color-on-secondary: var(--on-secondary);
+  --color-secondary-container: var(--secondary-container);
+  --color-on-secondary-container: var(--on-secondary-container);
+  --color-tertiary: var(--tertiary);
+  --color-on-tertiary: var(--on-tertiary);
+  --color-tertiary-container: var(--tertiary-container);
+  --color-on-tertiary-container: var(--on-tertiary-container);
+  --color-error: var(--error);
+  --color-on-error: var(--on-error);
+  --color-error-container: var(--error-container);
+  --color-on-error-container: var(--on-error-container);
+  --color-background: var(--background);
+  --color-on-background: var(--on-background);
+  --color-surface-variant: var(--surface-variant);
+  --color-live: var(--live);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+
+  --radius-sm: var(--design-radius-sm);
+  --radius-md: var(--design-radius-md);
+  --radius-lg: var(--design-radius-lg);
+  --radius-xl: var(--design-radius-xl);
+  --radius-full: 9999px;
+
+  --spacing-xs: var(--space-xs);
+  --spacing-sm: var(--space-sm);
+  --spacing-md: var(--space-md);
+  --spacing-lg: var(--space-lg);
+  --spacing-xl: var(--space-xl);
+  --spacing-gutter: var(--space-gutter);
+  --spacing-margin-mobile: var(--space-margin-mobile);
+  --spacing-margin-desktop: var(--space-margin-desktop);
+
+  --shadow-card: var(--design-shadow-card);
+  --shadow-floating: var(--design-shadow-floating);
+}
+
+:root {
+  color-scheme: light;
+
+  --font-ui: "Inter";
+  --font-data: "Inter";
+
+  --surface: #f8f9fb;
+  --surface-dim: #d8dadc;
+  --surface-bright: #f8f9fb;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f2f4f6;
+  --surface-container: #eceef0;
+  --surface-container-high: #e6e8ea;
+  --surface-container-highest: #e0e3e5;
+  --on-surface: #191c1e;
+  --on-surface-variant: #454652;
+  --inverse-surface: #2d3133;
+  --inverse-on-surface: #eff1f3;
+  --outline: #767683;
+  --outline-variant: #c6c5d4;
+  --surface-tint: #4c56af;
+  --primary: #000666;
+  --on-primary: #ffffff;
+  --primary-container: #1a237e;
+  --on-primary-container: #8690ee;
+  --inverse-primary: #bdc2ff;
+  --secondary: #8b5000;
+  --on-secondary: #ffffff;
+  --secondary-container: #ff9800;
+  --on-secondary-container: #653900;
+  --tertiary: #002100;
+  --on-tertiary: #ffffff;
+  --tertiary-container: #003900;
+  --on-tertiary-container: #54aa45;
+  --error: #ba1a1a;
+  --on-error: #ffffff;
+  --error-container: #ffdad6;
+  --on-error-container: #93000a;
+  --background: #f8f9fb;
+  --on-background: #191c1e;
+  --surface-variant: #e0e3e5;
+  --live: #ff9800;
+  --success: #006400;
+  --warning: #ff9800;
+
+  --design-radius-sm: 0.25rem;
+  --design-radius-md: 0.75rem;
+  --design-radius-lg: 1rem;
+  --design-radius-xl: 1.5rem;
+
+  --space-xs: 4px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-gutter: 16px;
+  --space-margin-mobile: 16px;
+  --space-margin-desktop: 48px;
+  --layout-max-width: 1280px;
+
+  --design-shadow-card: 0 4px 12px rgb(0 0 0 / 0.05);
+  --design-shadow-floating: 0 8px 24px rgb(0 0 0 / 0.12);
+  --overlay-backdrop: rgb(26 35 126 / 0.4);
+}
+
+.dark {
+  color-scheme: dark;
+
+  --font-ui: "Hanken Grotesk";
+  --font-data: "JetBrains Mono";
+
+  --surface: #0b1326;
+  --surface-dim: #0b1326;
+  --surface-bright: #31394d;
+  --surface-container-lowest: #060e20;
+  --surface-container-low: #131b2e;
+  --surface-container: #171f33;
+  --surface-container-high: #222a3d;
+  --surface-container-highest: #2d3449;
+  --on-surface: #dae2fd;
+  --on-surface-variant: #c5c6cd;
+  --inverse-surface: #dae2fd;
+  --inverse-on-surface: #283044;
+  --outline: #8f9097;
+  --outline-variant: #45474c;
+  --surface-tint: #bcc7de;
+  --primary: #bcc7de;
+  --on-primary: #263143;
+  --primary-container: #1e293b;
+  --on-primary-container: #8590a6;
+  --inverse-primary: #545f73;
+  --secondary: #ffe083;
+  --on-secondary: #3c2f00;
+  --secondary-container: #eec200;
+  --on-secondary-container: #645000;
+  --tertiary: #7bd0ff;
+  --on-tertiary: #00354a;
+  --tertiary-container: #002c3e;
+  --on-tertiary-container: #009acf;
+  --error: #ffb4ab;
+  --on-error: #690005;
+  --error-container: #93000a;
+  --on-error-container: #ffdad6;
+  --background: #0b1326;
+  --on-background: #dae2fd;
+  --surface-variant: #2d3449;
+  --live: #ef4444;
+  --success: #10b981;
+  --warning: #f97316;
+
+  --design-radius-sm: 0.125rem;
+  --design-radius-md: 0.375rem;
+  --design-radius-lg: 0.5rem;
+  --design-radius-xl: 0.75rem;
+
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-gutter: 1.5rem;
+  --space-margin-mobile: 1rem;
+  --space-margin-desktop: 2.5rem;
+  --layout-max-width: 1440px;
+
+  --design-shadow-card: 0 0 0 1px #334155;
+  --design-shadow-floating: 0 0 0 1px #334155, 0 16px 40px rgb(0 0 0 / 0.24);
+  --overlay-backdrop: rgb(0 0 0 / 0.6);
+}
+
+@utility text-display-lg {
+  font-family: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 56px;
+  letter-spacing: 0;
+}
+
+@utility text-headline-lg {
+  font-family: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 40px;
+  letter-spacing: 0;
+}
+
+@utility text-headline-lg-mobile {
+  font-family: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 36px;
+  letter-spacing: 0;
+}
+
+@utility text-title-md {
+  font-family: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  letter-spacing: 0;
+}
+
+@utility text-score-md {
+  font-family: var(--font-data), ui-monospace, monospace;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0;
+}
+
+@utility text-body-lg {
+  font-family: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: 0;
+}
+
+@utility text-body-md {
+  font-family: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0;
+}
+
+@utility text-body-sm {
+  font-family: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0;
+}
+
+@utility text-label-data {
+  font-family: var(--font-data), ui-monospace, monospace;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: 0.02em;
+}
+
+@utility text-label-caps {
+  font-family: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@utility page-shell {
+  width: min(100% - (var(--space-margin-mobile) * 2), var(--layout-max-width));
+  margin-inline: auto;
+}
+
+@utility overlay-backdrop {
+  background-color: var(--overlay-backdrop);
+  backdrop-filter: blur(12px);
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: var(--background);
+  color: var(--on-background);
+  font-family: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+}
+
+@media (min-width: 768px) {
+  .page-shell {
+    width: min(100% - (var(--space-margin-desktop) * 2), var(--layout-max-width));
+  }
+}
