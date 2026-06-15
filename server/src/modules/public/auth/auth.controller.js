@@ -12,7 +12,7 @@ export default class AuthController {
 
     async GoogleCallBack(req, res) {
         // console.log(req.user);
-        
+
 
         const { accessToken, refreshToken } = await this.userService.CreateUser(req.user)
 
@@ -76,13 +76,26 @@ export default class AuthController {
     async RefreshTokenController(req, res) {
         let accessToken = await this.userService.RefreshTokenService(req.cookies)
 
-         res.cookie('accessToken', accessToken, app_config.cookie.accessToken)
+        res.cookie('accessToken', accessToken, app_config.cookie.accessToken)
 
         return buildSuccessResponse(
             res,
             "accessToken fetched successfuly",
             StatusCodes.OK,
             accessToken
+        );
+    }
+
+    async LogoutController(req, res) {
+
+        await this.userService.LogoutService(req.cookies);
+
+        res.clearCookie("accessToken");
+        res.clearCookie("refreshToken");
+
+        return buildSuccessResponse(
+            res,
+            "Logged out successfully"
         );
     }
 }

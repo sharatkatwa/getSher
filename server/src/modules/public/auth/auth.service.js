@@ -155,4 +155,10 @@ export default class AuthService {
       return accessToken
 
    }
+
+   async LogoutService(data){
+      let { accessToken , refreshToken} = data
+
+      
+   }
 }

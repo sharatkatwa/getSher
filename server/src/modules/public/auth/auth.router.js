@@ -42,5 +42,7 @@ router.get('/me', authenticateMiddleware, asyncHandler(authController.GetMe.bind
 
 router.get('/getaccesshtoken', asyncHandler(authController.RefreshTokenController.bind(authController)))
 
+router.get('/logout', asyncHandler(authController.LogoutController.bind(authController)))
+
 export default router
 
