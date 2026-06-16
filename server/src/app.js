@@ -18,6 +18,7 @@ import publicMatchRoutes from "./modules/public/match/match.router.js";
 import privateMatchRoutes from "./modules/private/match/match.route.js";
 import publicPlayerRoutes from "./modules/public/player/player.router.js";
 import privatePlayerRoutes from "./modules/private/player/player.router.js";
+import privateUserRoutes from "./modules/private/user/user.route.js";
 
 export default function createApp() {
   const app = express();
@@ -50,6 +51,7 @@ export default function createApp() {
   app.use("/api/team", privateTeamRoutes);
   app.use("/api/match", privateMatchRoutes);
   app.use("/api/player", privatePlayerRoutes);
+  app.use("/api/users", privateUserRoutes);
 
   app.use(notFound);
   app.use(ErrorHandler);
