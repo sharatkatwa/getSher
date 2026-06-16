@@ -1,6 +1,10 @@
 import { StatusCodes } from "http-status-codes";
 
 const ErrorHandler = (err, req, res, next) => {
+  if (res.headersSent) {
+    return next(err);
+  }
+
   const errorResponse = { success: false };
   if (err.details) errorResponse.details = err.details;
   if (err.message) errorResponse.message = err.message;

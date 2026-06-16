@@ -3,7 +3,10 @@ const WILDCARD = "*";
 const escapeRegex = (value) => value.replace(/[.+?^${}()|[\]\\]/g, "\\$&");
 
 export const normalizeOrigin = (origin = "") => {
-  const trimmedOrigin = origin.trim().replace(/\/+$/, "");
+  const trimmedOrigin = origin
+    .trim()
+    .replace(/^['"]|['"]$/g, "")
+    .replace(/\/+$/, "");
 
   if (!trimmedOrigin) return "";
   if (trimmedOrigin === WILDCARD || trimmedOrigin.includes(WILDCARD)) {

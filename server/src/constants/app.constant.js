@@ -6,7 +6,6 @@ export default {
   RATELIMIT_WINDOWMS: 15 * 60 * 1000,
   RATELIMIT: 100,
   GOOGLE_CALLBACK_URL: 'http://localhost:3000/api/auth/google/callback',
-  GOOGLE_CALLBACK_URL: 'https://getsher.onrender.com/api/auth/google/callback',
   // REDIRECT_URL: 'http://localhost:5173'
 };
 
