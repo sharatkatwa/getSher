@@ -8,6 +8,7 @@ const navItems = [
   { label: "Manage Series", icon: "trophy", to: "/admin/series" },
   { label: "Manage Matches", icon: "chart", to: "/admin/matches" },
   { label: "Playing XI", icon: "shield", to: "/admin/playing-xi" },
+  { label: "Live Scoring", icon: "activity", to: "/admin/scoring" },
 ];
 
 const utilityItems = [

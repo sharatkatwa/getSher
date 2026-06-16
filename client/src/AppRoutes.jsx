@@ -16,6 +16,7 @@ import AdminPlayers from "./pages/private/AdminPlayers";
 import AdminPlayingXI from "./pages/private/AdminPlayingXI";
 import AdminSeries from "./pages/private/AdminSeries";
 import AdminTeams from "./pages/private/AdminTeams";
+import AdminScoring from "./pages/private/AdminScoring";
 
 const AppRoutes = () => {
   const router = createBrowserRouter([
@@ -82,6 +83,10 @@ const AppRoutes = () => {
         {
           path: "playing-xi",
           element: <AdminPlayingXI />,
+        },
+        {
+          path: "scoring",
+          element: <AdminScoring />,
         },
       ],
     },

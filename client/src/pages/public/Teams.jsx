@@ -12,10 +12,32 @@ import { useTeams } from "../../hooks/useTeams";
 // ];
 
 const Teams = () => {
-  const {teams, isLoading, isError,}  = useTeams()
-  
-  // console.log(Teams);
-  
+  const { teams = [], isLoading, isError } = useTeams();
+
+  {
+    isLoading && (
+      <div className="rounded-lg border border-outline-variant bg-surface-container-lowest p-md text-body-md text-on-surface-variant">
+        Loading teams...
+      </div>
+    );
+  }
+
+  {
+    isError && (
+      <div className="rounded-lg border border-error bg-error-container p-md text-body-md font-bold text-on-error-container">
+        Failed to load teams.
+      </div>
+    );
+  }
+
+  {
+    !isLoading && !isError && teams.length === 0 && (
+      <div className="rounded-lg border border-outline-variant bg-surface-container-lowest p-md text-body-md text-on-surface-variant">
+        No teams found.
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-lg px-md py-lg lg:px-lg">
       <PageHeader
@@ -34,14 +56,21 @@ const Teams = () => {
             <div className="flex items-center gap-md">
               <TeamBadge code={team.shortName} />
               <div className="min-w-0 flex-1">
-                <h2 className="text-title-md font-extrabold text-on-surface">{team.name}</h2>
-                <p className="text-label-data text-on-surface-variant">{team.shortName} squad profile</p>
+                <h2 className="text-title-md font-extrabold text-on-surface">
+                  {team.name}
+                </h2>
+                <p className="text-label-data text-on-surface-variant">
+                  {team.shortName} squad profile
+                </p>
               </div>
               <StatusPill tone="completed">Active</StatusPill>
             </div>
 
             <div className="mt-md grid grid-cols-3 gap-sm">
-              <StatBadge label="Players" value={team.squadPlayers?.length || 0} />
+              <StatBadge
+                label="Players"
+                value={team.squadPlayers?.length || 0}
+              />
               <StatBadge label="Color" value={team.primaryColor || "N/A"} />
               {/* <StatBadge label="Form" value={team.form} /> */}
             </div>
