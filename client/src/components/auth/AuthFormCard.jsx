@@ -1,25 +1,44 @@
+import { useAuth } from "../../hooks/useAuth";
 import AuthDivider from "../shared/AuthDivider";
 import AuthSubmitButton from "../shared/AuthSubmitButton";
 import AuthTextField from "../shared/AuthTextField";
 import GoogleAuthButton from "./GoogleAuthButton";
 
+
 const AuthFormCard = ({ mode }) => {
   const isRegister = mode === "register";
+  const {
+    register,
+    handleSubmit,
+    errors,
+    watch,
+    onSubmit,
+  } = useAuth()
+
+  const password = watch("password");
 
   return (
     // Static UI only for now; API submission can be added here later.
-    <form className="grid gap-md">
+    <form
+      className="grid gap-md"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <GoogleAuthButton
       >{isRegister ? "Sign up with Google" : "Login with Google"}</GoogleAuthButton>
       <AuthDivider />
 
       {isRegister && (
-      <AuthTextField
-        autoComplete="name"
-        label="Full name"
-        name="name"
-        placeholder="Virat Kohli"
-      />
+        <AuthTextField
+          register={register}
+          error={errors.name}
+          validation={{
+            required: "Name is required",
+          }}
+          autoComplete="name"
+          label="Full name"
+          name="name"
+          placeholder="Virat Kohli"
+        />
       )}
 
       <AuthTextField
@@ -28,6 +47,15 @@ const AuthFormCard = ({ mode }) => {
         name="email"
         placeholder="you@example.com"
         type="email"
+        register={register}
+        error={errors.email}
+        validation={{
+          required: "Email is required",
+          pattern: {
+            value: /^\S+@\S+$/i,
+            message: "Invalid email",
+          },
+        }}
       />
 
       <AuthTextField
@@ -36,15 +64,32 @@ const AuthFormCard = ({ mode }) => {
         name="password"
         placeholder="Enter password"
         type="password"
+        register={register}
+        error={errors.password}
+        validation={{
+          required: "Password is required",
+          minLength: {
+            value: 6,
+            message: "Minimum 6 characters",
+          },
+        }}
       />
 
       {isRegister && (
         <AuthTextField
+
           autoComplete="new-password"
           label="Confirm password"
           name="confirmPassword"
           placeholder="Re-enter password"
           type="password"
+          register={register}
+          error={errors.confirmPassword}
+          validation={{
+            required: "Confirm password is required",
+            validate: (value) =>
+              value === password || "Passwords do not match",
+          }}
         />
       )}
 

@@ -3,7 +3,8 @@ import { Outlet } from "react-router";
 import Sidebar from "../components/shared/Sidebar";
 import TopBar from "../components/shared/TopBar";
 import { useQuery } from "@tanstack/react-query";
-import { getMe } from "../api/auth.api";
+import { getMe } from "../api/authApi";
+
 
 
 const AppLayout = () => {
