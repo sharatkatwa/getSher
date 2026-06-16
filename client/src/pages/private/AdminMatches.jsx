@@ -1,6 +1,4 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
 import AdminActionButton from "../../components/admin/AdminActionButton";
@@ -9,17 +7,11 @@ import AdminToolbar from "../../components/admin/AdminToolbar";
 import PageHeader from "../../components/shared/PageHeader";
 import StatusPill from "../../components/shared/StatusPill";
 
-import { deleteMatch, getMatches } from "../../api/matchApi";
-import { getApiError } from "../../components/admin/matchFormUtils";
-import { setMatches } from "../../slices/matchSlice";
-
-
-;
+import { useDeleteMatch, useMatches } from "../../hooks/useMatch";
+import { getApiError } from "../../utils/match/matchUtils";
 
 const AdminMatches = () => {
-  const dispatch = useDispatch();
-const navigate = useNavigate();
-const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   // Get matches from redux store
   const matches = useSelector(
@@ -27,29 +19,14 @@ const queryClient = useQueryClient();
   );
 
   // Fetch matches from backend
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["matches"],
-    queryFn: getMatches,
-  });
+  const { isLoading, error } = useMatches();
 
-  const deleteMutation = useMutation({
-    mutationFn: deleteMatch,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["matches"] });
-    },
-  });
+  const deleteMutation = useDeleteMatch();
 
   const handleDelete = (row) => {
     if (!window.confirm(`Delete ${row.match}?`)) return;
     deleteMutation.mutate(row.id);
   };
-
-  // Store fetched matches in redux so other pages can use them
-  useEffect(() => {
-    if (data?.data?.matches) {
-      dispatch(setMatches(data.data.matches));
-    }
-  }, [data, dispatch]);
 
   // Show loading state while api request is in progress
   if (isLoading) {
@@ -103,11 +80,11 @@ const queryClient = useQueryClient();
         title="Manage Matches"
       />
 
-     <AdminToolbar
-  primaryAction="Create Match"
-  onPrimaryAction={() => navigate("/admin/matches/create")}
-  searchPlaceholder="Search match, venue, or series..."
-/>
+      <AdminToolbar
+        primaryAction="Create Match"
+        onPrimaryAction={() => navigate("/admin/matches/create")}
+        searchPlaceholder="Search match, venue, or series..."
+      />
 
       {deleteMutation.error && (
         <div className="rounded-md border border-error bg-red-50 p-md text-body-md font-semibold text-error">

@@ -1,11 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router";
 
-import { getSeries } from "../../api/seriesApi";
-import { getTeams } from "../../api/teamApi";
-import { createMatch, getMatchById, updateMatch } from "../../api/matchApi";
+import { useCreateMatch, useMatchFormQueries, useUpdateMatch } from "../../hooks/useMatch";
 import {
   AdvancedSection,
   CompetitorsSection,
@@ -14,41 +10,29 @@ import {
   ScheduleSection,
   StatusSection,
 } from "./MatchFormSections";
-import { DEFAULT_MATCH_VALUES, getApiError, toFormValues, toMatchPayload, toOptions } from "./matchFormUtils";
+import {
+  DEFAULT_MATCH_VALUES,
+  getApiError,
+  toFormValues,
+  toMatchPayload,
+  toOptions,
+} from "../../utils/match/matchUtils";
 
 const MatchForm = ({ mode = "create", matchId }) => {
-  const queryClient = useQueryClient();
-  const navigate = useNavigate();
   const isEdit = mode === "edit";
   const { register, handleSubmit, reset, watch, formState } = useForm({
     defaultValues: DEFAULT_MATCH_VALUES,
   });
 
-  const teamsQuery = useQuery({ queryKey: ["teams"], queryFn: getTeams });
-  const seriesQuery = useQuery({ queryKey: ["series"], queryFn: getSeries });
-  const matchQuery = useQuery({
-    queryKey: ["match", matchId],
-    queryFn: () => getMatchById(matchId),
-    enabled: isEdit && !!matchId,
-  });
+  const { teamsQuery, seriesQuery, matchQuery, loading, loadError } = useMatchFormQueries({ matchId, isEdit });
 
   useEffect(() => {
     if (isEdit && matchQuery.data?.data) reset(toFormValues(matchQuery.data.data));
   }, [isEdit, matchQuery.data, reset]);
 
-  const handleSuccess = () => {
-    queryClient.invalidateQueries({ queryKey: ["matches"] });
-    navigate("/admin/matches");
-  };
+  const createMutation = useCreateMatch();
+  const updateMutation = useUpdateMatch(matchId);
 
-  const createMutation = useMutation({ mutationFn: createMatch, onSuccess: handleSuccess });
-  const updateMutation = useMutation({
-    mutationFn: (payload) => updateMatch(matchId, payload),
-    onSuccess: handleSuccess,
-  });
-
-  const loading = teamsQuery.isLoading || seriesQuery.isLoading || matchQuery.isLoading;
-  const loadError = teamsQuery.error || seriesQuery.error || matchQuery.error;
   const mutationError = createMutation.error || updateMutation.error;
   const isSaving = createMutation.isPending || updateMutation.isPending;
   const errors = formState.errors;

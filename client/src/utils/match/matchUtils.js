@@ -10,10 +10,18 @@ export const DEFAULT_MATCH_VALUES = {
   tossResult: "",
 };
 
-const getId = (value) => {
+export const EMPTY_LINEUP = {
+  selected: [],
+  captain: "",
+  wicketKeeper: "",
+};
+
+export const getId = (value) => {
   if (!value) return "";
   return typeof value === "string" ? value : value._id || value.id || "";
 };
+
+export const getTeamName = (team, fallback) => team?.name || team?.shortName || fallback;
 
 const toDateInput = (value) => {
   if (!value) return "";
@@ -65,4 +73,24 @@ export const toMatchPayload = (data, isEdit) => {
   if (isEdit) payload.status = data.status;
 
   return payload;
+};
+
+export const toLineup = (players = []) => ({
+  selected: players.map((item) => getId(item.player)),
+  captain: getId(players.find((item) => item.isCaptain)?.player),
+  wicketKeeper: getId(players.find((item) => item.isWicketKeeper)?.player),
+});
+
+export const buildLineupPayload = ({ selected, captain, wicketKeeper }) =>
+  selected.map((playerId) => ({
+    player: playerId,
+    isCaptain: playerId === captain,
+    isWicketKeeper: playerId === wicketKeeper,
+  }));
+
+export const getLineupError = (lineup, label) => {
+  if (lineup.selected.length !== 11) return `${label} needs exactly 11 selected players.`;
+  if (!lineup.captain) return `${label} needs 1 captain.`;
+  if (!lineup.wicketKeeper) return `${label} needs 1 wicketkeeper.`;
+  return "";
 };

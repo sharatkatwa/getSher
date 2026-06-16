@@ -1,39 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 
 import PageHeader from "../../components/shared/PageHeader";
 import StatusPill from "../../components/shared/StatusPill";
-import { getMatchById, updatePlayingXI } from "../../api/matchApi";
-import { getTeamSquad } from "../../api/teamApi";
-import { getApiError } from "../../components/admin/matchFormUtils";
-
-const emptyLineup = {
-  selected: [],
-  captain: "",
-  wicketKeeper: "",
-};
-
-const getId = (value) => {
-  if (!value) return "";
-  return typeof value === "string" ? value : value._id || value.id || "";
-};
-
-const getTeamName = (team, fallback) => team?.name || team?.shortName || fallback;
-
-const buildLineupPayload = ({ selected, captain, wicketKeeper }) =>
-  selected.map((playerId) => ({
-    player: playerId,
-    isCaptain: playerId === captain,
-    isWicketKeeper: playerId === wicketKeeper,
-  }));
-
-const getLineupError = (lineup, label) => {
-  if (lineup.selected.length !== 11) return `${label} needs exactly 11 selected players.`;
-  if (!lineup.captain) return `${label} needs 1 captain.`;
-  if (!lineup.wicketKeeper) return `${label} needs 1 wicketkeeper.`;
-  return "";
-};
+import { useMatch, useTeamSquad, useUpdatePlayingXI } from "../../hooks/useMatch";
+import {
+  EMPTY_LINEUP,
+  getApiError,
+  getId,
+  getLineupError,
+  getTeamName,
+  toLineup,
+} from "../../utils/match/matchUtils";
 
 const PlayerOption = ({
   player,
@@ -157,58 +135,26 @@ const TeamLineup = ({ title, squad, value, onChange, disabled = false }) => {
 
 const AdminPlayingXI = () => {
   const { matchId } = useParams();
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const [team1Lineup, setTeam1Lineup] = useState(emptyLineup);
-  const [team2Lineup, setTeam2Lineup] = useState(emptyLineup);
+  const [team1Lineup, setTeam1Lineup] = useState(EMPTY_LINEUP);
+  const [team2Lineup, setTeam2Lineup] = useState(EMPTY_LINEUP);
 
-  const matchQuery = useQuery({
-    queryKey: ["match", matchId],
-    queryFn: () => getMatchById(matchId),
-    enabled: !!matchId,
-  });
+  const matchQuery = useMatch(matchId);
 
   const match = matchQuery.data?.data;
   const team1Id = getId(match?.team1);
   const team2Id = getId(match?.team2);
 
-  const team1SquadQuery = useQuery({
-    queryKey: ["team-squad", team1Id],
-    queryFn: () => getTeamSquad(team1Id),
-    enabled: !!team1Id,
-  });
-
-  const team2SquadQuery = useQuery({
-    queryKey: ["team-squad", team2Id],
-    queryFn: () => getTeamSquad(team2Id),
-    enabled: !!team2Id,
-  });
+  const team1SquadQuery = useTeamSquad(team1Id);
+  const team2SquadQuery = useTeamSquad(team2Id);
 
   useEffect(() => {
     if (!match?.playingXI) return;
-
-    const toLineup = (players = []) => ({
-      selected: players.map((item) => getId(item.player)),
-      captain: getId(players.find((item) => item.isCaptain)?.player),
-      wicketKeeper: getId(players.find((item) => item.isWicketKeeper)?.player),
-    });
 
     setTeam1Lineup(toLineup(match.playingXI.team1));
     setTeam2Lineup(toLineup(match.playingXI.team2));
   }, [match]);
 
-  const mutation = useMutation({
-    mutationFn: () =>
-      updatePlayingXI(matchId, {
-        team1: buildLineupPayload(team1Lineup),
-        team2: buildLineupPayload(team2Lineup),
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["match", matchId] });
-      queryClient.invalidateQueries({ queryKey: ["matches"] });
-      navigate("/admin/matches");
-    },
-  });
+  const mutation = useUpdatePlayingXI(matchId, team1Lineup, team2Lineup);
 
   const team1Error = getLineupError(team1Lineup, getTeamName(match?.team1, "Team 1"));
   const team2Error = getLineupError(team2Lineup, getTeamName(match?.team2, "Team 2"));

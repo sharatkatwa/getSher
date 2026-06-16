@@ -8,7 +8,7 @@ import { getMe } from "../api/auth.api";
 
 const AppLayout = () => {
 
-   const query = useQuery({ queryKey: ['me'], queryFn: getMe,retry:false ,refetchOnWindowFocus:false})
+   useQuery({ queryKey: ['me'], queryFn: getMe,retry:false ,refetchOnWindowFocus:false})
 
   // Local state keeps the mobile drawer isolated to this layout.
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
