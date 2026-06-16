@@ -5,11 +5,18 @@ let ioInstance = null;
 
 const getMatchRoom = (matchId) => `match:${matchId}`;
 
+const parseCorsOrigins = (corsOrigin = "") =>
+  corsOrigin
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
 export const initSocket = (httpServer, corsOrigin) => {
   ioInstance = new Server(httpServer, {
     cors: {
-      origin: corsOrigin,
+      origin: parseCorsOrigins(corsOrigin),
       credentials: true,
+      methods: ["GET", "POST"],
     },
   });
 

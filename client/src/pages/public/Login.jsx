@@ -3,7 +3,6 @@ import { Link } from "react-router";
 import AuthFormCard from "../../components/auth/AuthFormCard";
 import AuthShell from "../../components/auth/AuthShell";
 
-// Static auth screen; form behavior can be connected when auth API flow is ready.
 const Login = () => {
   return (
     <AuthShell
@@ -24,4 +23,4 @@ const Login = () => {
   );
 };
 
-export default Login
+export default Login;

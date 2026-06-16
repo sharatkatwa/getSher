@@ -1,7 +1,8 @@
-const AuthSubmitButton = ({ children }) => {
+const AuthSubmitButton = ({ children, disabled = false }) => {
   return (
     <button
-      className="h-12 w-full rounded-md bg-primary px-md text-body-md font-extrabold text-on-primary transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-primary/30"
+      className="h-12 w-full rounded-md bg-primary px-md text-body-md font-extrabold text-on-primary transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-primary/30 disabled:cursor-not-allowed disabled:opacity-60"
+      disabled={disabled}
       type="submit"
     >
       {children}
