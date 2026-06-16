@@ -1,9 +1,38 @@
 import axios from "axios";
 import { VITE_API_URL } from "../utils/env";
 
+// Shared API client for future TanStack Query hooks and mutations.
 const api = axios.create({
   baseURL: VITE_API_URL,
   withCredentials: true,
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error?.config;
+    const errorMessage = error.response?.data?.message;
+    const errorStatusCode = error.response?.status;
+
+    if (
+      errorStatusCode !== 401 ||
+      errorMessage !== "Access token expired" ||
+      originalRequest?._retry
+    ) {
+      return Promise.reject(error);
+    }
+
+    originalRequest._retry = true;
+
+    try {
+      await axios.get(`${VITE_API_URL}/auth/getaccesshtoken`, {
+        withCredentials: true,
+      });
+      return api(originalRequest);
+    } catch (refreshError) {
+      return Promise.reject(refreshError);
+    }
+  },
+);
 
 export default api;

@@ -80,10 +80,10 @@ export default class AuthService {
 
       let userInfoForToken = {
          id: user._id,
-         email: user.emails,
-         picture: user.photos,
+         email: user.email,
+         picture: user.picture,
          role: user.role,
-         name: user.displayName
+         name: user.name
       }
 
       const refreshToken = jwt.sign(userInfoForToken, env.REFRESH_TOKEN_SECRET, app_config.jwt.refreshToken)
@@ -116,10 +116,10 @@ export default class AuthService {
 
       let userInfoForToken = {
          id: user._id,
-         email: user.emails,
-         picture: user.photos,
+         email: user.email,
+         picture: user.picture,
          role: user.role,
-         name: user.displayName
+         name: user.name
       }
 
       const refreshToken = jwt.sign(userInfoForToken, env.REFRESH_TOKEN_SECRET, app_config.jwt.refreshToken)
@@ -159,10 +159,10 @@ export default class AuthService {
 
       let userInfoForToken = {
          id: user._id,
-         email: user.emails,
-         picture: user.photos,
+         email: user.email,
+         picture: user.picture,
          role: user.role,
-         name: user.displayName
+         name: user.name
       }
       const accessToken = jwt.sign(userInfoForToken, env.ACCESS_TOKEN_SECRET, app_config.jwt.accessToken)
 

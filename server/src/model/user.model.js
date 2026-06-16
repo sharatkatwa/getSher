@@ -12,11 +12,12 @@ const userSchema = new Schema(
       trim: true,
     },
     password: { type: String },
+    picture: { type: String, default: "" },
 
     role: {
       type: String,
       enum: Object.values(ROLES),
-      default: ROLES.SCORER,
+      default: ROLES.USER,
     },
     isDeleted: {
       type: Boolean,

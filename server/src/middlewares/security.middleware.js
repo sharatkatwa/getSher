@@ -6,15 +6,13 @@ import compression from "compression";
 import cors from "cors";
 import rateLimit from 'express-rate-limit'
 import cookieParser from 'cookie-parser'
+import { buildCorsOptions } from "../config/cors.js";
 
 export default function securityMiddleware(app) {
 
 // for allowing cross origin requests.
   app.use(
-    cors({
-      origin: env.CORS_ORIGIN.split(",").map((origin) => origin.trim()),
-      credentials: true,
-    }),
+    cors(buildCorsOptions(env.CORS_ORIGIN)),
   );
   
   // to get cookies in request

@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap");
 @import "tailwindcss";
 
+/* Tailwind v4 token aliases. Components should use these semantic utility names. */
 @theme {
   --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-data), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -63,6 +64,7 @@
   --shadow-floating: var(--design-shadow-floating);
 }
 
+/* Light theme is the default public/admin UI theme. */
 :root {
   color-scheme: light;
 
@@ -128,6 +130,7 @@
   --overlay-backdrop: rgb(26 35 126 / 0.4);
 }
 
+/* Dark mode overrides the same semantic tokens when a parent has class="dark". */
 .dark {
   color-scheme: dark;
 
@@ -193,6 +196,7 @@
   --overlay-backdrop: rgb(0 0 0 / 0.6);
 }
 
+/* Typography utilities mirror the design-system type scale. */
 @utility text-display-lg {
   font-family: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
   font-size: 48px;
@@ -274,6 +278,7 @@
   text-transform: uppercase;
 }
 
+/* Page shell keeps major public pages aligned to the design-system width. */
 @utility page-shell {
   width: min(100% - (var(--space-margin-mobile) * 2), var(--layout-max-width));
   margin-inline: auto;

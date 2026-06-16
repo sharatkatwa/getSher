@@ -4,20 +4,36 @@ import TeamService from "./team.service.js";
 
 export default class TeamController {
   constructor() {
-    this.teamService = new TeamService()
+    this.teamService = new TeamService();
   }
 
   async getAllTeam(req, res) {
-    const teams = await this.teamService.getTeams()
-    buildSuccessResponse(res,'all teams fetched successfully',StatusCodes.OK,teams)
+    const teams = await this.teamService.getTeams();
+    return buildSuccessResponse(
+      res,
+      "all teams fetched successfully",
+      StatusCodes.OK,
+      teams,
+    );
   }
+
   async getTeamById(req, res) {
-    const team = await this.teamService.getTeamById(id)
-    buildSuccessResponse(res,'team fetched successfully', StatusCodes.OK,team)
+    const team = await this.teamService.getTeamById(req.params.id);
+    return buildSuccessResponse(
+      res,
+      "team fetched successfully",
+      StatusCodes.OK,
+      team,
+    );
   }
 
   async getTeamSquad(req, res) {
-    const squad = await this.teamService.getSquad(req.params.teamId)
-    buildSuccessResponse(res,"squad fetched successfully", StatusCodes.OK, squad)
+    const squad = await this.teamService.getSquad(req.params.teamId);
+    return buildSuccessResponse(
+      res,
+      "squad fetched successfully",
+      StatusCodes.OK,
+      squad,
+    );
   }
 }
