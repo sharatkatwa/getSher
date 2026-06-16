@@ -14,7 +14,7 @@ const envSchema = z.object({
   GOOGLE_CALLBACK_URL:z.string().default(appConstant.GOOGLE_CALLBACK_URL),
   GOOGLE_CLIENT_ID: z.string(),
   GOOGLE_CLIENT_SECRET: z.string(),
-  REDIRCT_URL: z.string(),
+  REDIRECT_URL: z.string().default(appConstant.REDIRECT_URL),
   REFRESH_TOKEN_SECRET:z.string(),
   ACCESS_TOKEN_SECRET:z.string(),
   GOOGLE_CALLBACK_URL : z.string().default(appConstant.GOOGLE_CALLBACK_URL)
