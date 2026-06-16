@@ -1,10 +1,7 @@
 import express from "express";
 
-import scoreController from "./score.controller.js";
-import {
-  createScoreValidator,
-  updateScoreValidator,
-} from "./score.validator.js";
+import commentaryController from "./commentary.controller.js";
+import { createCommentaryValidator } from "./commentary.validator.js";
 import { asyncHandler } from "../../../shared/utils/asyncHandler.js";
 import {
   authenticateMiddleware,
@@ -18,18 +15,16 @@ router.post(
   "/",
   authenticateMiddleware,
   authorizeRole(["SUPER_ADMIN", "SCORER"]),
-  createScoreValidator,
+  createCommentaryValidator,
   validateErrors,
-  asyncHandler(scoreController.createScore.bind(scoreController)),
+  asyncHandler(commentaryController.addCommentary.bind(commentaryController)),
 );
 
-router.patch(
+router.delete(
   "/:id",
   authenticateMiddleware,
   authorizeRole(["SUPER_ADMIN", "SCORER"]),
-  updateScoreValidator,
-  validateErrors,
-  asyncHandler(scoreController.updateScore.bind(scoreController)),
+  asyncHandler(commentaryController.deleteCommentary.bind(commentaryController)),
 );
 
 export default router;

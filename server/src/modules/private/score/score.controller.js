@@ -27,17 +27,6 @@ class ScoreController {
       score,
     );
   }
-
-  async getScoresByMatch(req, res) {
-    const scores = await scoreService.getScoresByMatch(req.params.matchId);
-
-    return buildSuccessResponse(
-      res,
-      "Match scores fetched successfully",
-      StatusCodes.OK,
-      scores,
-    );
-  }
 }
 
 export default new ScoreController();
