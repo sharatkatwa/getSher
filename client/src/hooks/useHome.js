@@ -1,6 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { getHomeFeed } from "../api/home.api.js";
+import { socket } from "../lib/socket.js";
+import { SOCKET_EVENTS } from "../sockets/socketEvents.js";
 
 export const homeKeys = {
   all: ["home"],
@@ -21,3 +24,38 @@ export const useHome = () =>
     retry: false,
     refetchOnWindowFocus: false,
   });
+
+export const useHomeSocket = (matchIds = []) => {
+  const queryClient = useQueryClient();
+  const roomKey = matchIds.filter(Boolean).sort().join("|");
+
+  useEffect(() => {
+    const roomIds = roomKey.split("|").filter(Boolean);
+
+    if (roomIds.length === 0) return undefined;
+
+    socket.connect();
+    roomIds.forEach((matchId) => {
+      socket.emit(SOCKET_EVENTS.JOIN_MATCH, matchId);
+    });
+
+    const refreshHomeFeed = () => {
+      queryClient.invalidateQueries({ queryKey: homeKeys.feed() });
+    };
+
+    socket.on(SOCKET_EVENTS.SCORE_CREATED, refreshHomeFeed);
+    socket.on(SOCKET_EVENTS.SCORE_UPDATED, refreshHomeFeed);
+    socket.on(SOCKET_EVENTS.COMMENTARY_CREATED, refreshHomeFeed);
+    socket.on(SOCKET_EVENTS.COMMENTARY_DELETED, refreshHomeFeed);
+
+    return () => {
+      roomIds.forEach((matchId) => {
+        socket.emit(SOCKET_EVENTS.LEAVE_MATCH, matchId);
+      });
+      socket.off(SOCKET_EVENTS.SCORE_CREATED, refreshHomeFeed);
+      socket.off(SOCKET_EVENTS.SCORE_UPDATED, refreshHomeFeed);
+      socket.off(SOCKET_EVENTS.COMMENTARY_CREATED, refreshHomeFeed);
+      socket.off(SOCKET_EVENTS.COMMENTARY_DELETED, refreshHomeFeed);
+    };
+  }, [queryClient, roomKey]);
+};
