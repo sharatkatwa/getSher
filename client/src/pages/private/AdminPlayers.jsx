@@ -3,16 +3,16 @@ import AdminTable from "../../components/admin/AdminTable";
 import AdminToolbar from "../../components/admin/AdminToolbar";
 import PageHeader from "../../components/shared/PageHeader";
 import StatusPill from "../../components/shared/StatusPill";
-
-// Static table rows; later this page should use a players query and mutations.
-const players = [
-  { id: 1, name: "Virat Kohli", role: "BATSMAN", country: "India", style: "Right hand bat", status: "Active" },
-  { id: 2, name: "Pat Cummins", role: "BOWLER", country: "Australia", style: "Right arm fast", status: "Active" },
-  { id: 3, name: "Jos Buttler", role: "WICKET_KEEPER", country: "England", style: "Right hand bat", status: "Review" },
-  { id: 4, name: "Kagiso Rabada", role: "BOWLER", country: "South Africa", style: "Right arm fast", status: "Active" },
-];
+import { usePlayers } from "../../hooks/usePlayers";
 
 const AdminPlayers = () => {
+  const { data: players = [], isError, isLoading } = usePlayers();
+  const rows = players.map((player) => ({
+    ...player,
+    status: player.isDeleted ? "Deleted" : "Active",
+    style: player.battingStyle || player.bowlingStyle || "N/A",
+  }));
+
   return (
     <div className="space-y-lg px-md py-lg lg:px-lg">
       <PageHeader
@@ -22,6 +22,10 @@ const AdminPlayers = () => {
         title="Manage Players"
       />
       <AdminToolbar primaryAction="Add Player" searchPlaceholder="Search player name, role, country..." />
+
+      {isLoading && <StatusPill tone="neutral">Loading players...</StatusPill>}
+      {isError && <StatusPill tone="live">Failed to load players</StatusPill>}
+
       <AdminTable
         columns={[
           { key: "name", label: "Player" },
@@ -44,7 +48,7 @@ const AdminPlayers = () => {
             <AdminActionButton variant="danger">Delete</AdminActionButton>
           </>
         )}
-        rows={players}
+        rows={rows}
       />
     </div>
   );

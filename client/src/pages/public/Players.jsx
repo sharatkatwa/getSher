@@ -2,70 +2,47 @@ import Icon from "../../components/shared/Icon";
 import PageHeader from "../../components/shared/PageHeader";
 import StatBadge from "../../components/shared/StatBadge";
 import StatusPill from "../../components/shared/StatusPill";
-
-// Static preview data; replace with usePlayers() once API integration is enabled.
-const players = [
-  {
-    name: "Virat Kohli",
-    role: "BATSMAN",
-    country: "India",
-    batting: "Right hand bat",
-    bowling: "Right arm medium",
-    form: "84*",
-    matches: 302,
-    accent: "IND",
-  },
-  {
-    name: "Pat Cummins",
-    role: "BOWLER",
-    country: "Australia",
-    batting: "Right hand bat",
-    bowling: "Right arm fast",
-    form: "4/67",
-    matches: 128,
-    accent: "AUS",
-  },
-  {
-    name: "Jos Buttler",
-    role: "WICKET_KEEPER",
-    country: "England",
-    batting: "Right hand bat",
-    bowling: "N/A",
-    form: "52",
-    matches: 190,
-    accent: "ENG",
-  },
-  {
-    name: "Kagiso Rabada",
-    role: "BOWLER",
-    country: "South Africa",
-    batting: "Left hand bat",
-    bowling: "Right arm fast",
-    form: "3/41",
-    matches: 159,
-    accent: "RSA",
-  },
-];
+import { usePlayers } from "../../hooks/usePlayers";
 
 const Players = () => {
+  const { data: players = [], isError, isLoading } = usePlayers();
+
   return (
     <div className="space-y-lg px-md py-lg lg:px-lg">
       <PageHeader
-        description="Browse player profiles, current form, roles, and cricketing styles across international squads."
+        action={<StatusPill tone="primary">{players.length} Active Players</StatusPill>}
+        description="Browse player profiles, roles, countries, and cricketing styles across international squads."
         eyebrow="Roster"
         title="Players"
-        action={<StatusPill tone="primary">{players.length} Active Players</StatusPill>}
       />
+
+      {isLoading && (
+        <div className="rounded-lg border border-outline-variant bg-surface-container-lowest p-md text-body-md text-on-surface-variant">
+          Loading players...
+        </div>
+      )}
+
+      {isError && (
+        <div className="rounded-lg border border-error bg-error-container p-md text-body-md font-bold text-on-error-container">
+          Failed to load players.
+        </div>
+      )}
+
+      {!isLoading && !isError && players.length === 0 && (
+        <div className="rounded-lg border border-outline-variant bg-surface-container-lowest p-md text-body-md text-on-surface-variant">
+          No players found.
+        </div>
+      )}
 
       <div className="grid gap-md md:grid-cols-2 xl:grid-cols-4">
         {players.map((player) => (
           <article
             className="rounded-lg border border-outline-variant bg-surface-container-lowest p-md shadow-card transition hover:border-primary"
-            key={player.name}
+            key={player._id}
           >
             <div className="flex items-start justify-between gap-md">
               <div className="grid size-14 place-items-center rounded-lg bg-primary text-title-md font-extrabold text-on-primary">
-                {player.accent}
+                {player.country?.slice(0, 3).toUpperCase() || "PLY"}
               </div>
               <StatusPill tone="neutral">{player.role}</StatusPill>
             </div>
@@ -76,17 +53,17 @@ const Players = () => {
             <div className="mt-md grid gap-sm">
               <div className="flex items-center gap-sm text-body-sm text-on-surface-variant">
                 <Icon name="bat" className="h-4 w-4 text-primary" />
-                {player.batting}
+                {player.battingStyle}
               </div>
               <div className="flex items-center gap-sm text-body-sm text-on-surface-variant">
                 <Icon name="activity" className="h-4 w-4 text-primary" />
-                {player.bowling}
+                {player.bowlingStyle || "N/A"}
               </div>
             </div>
 
             <div className="mt-md grid grid-cols-2 gap-sm">
-              <StatBadge label="Form" value={player.form} />
-              <StatBadge label="Matches" value={player.matches} />
+              <StatBadge label="Role" value={player.role} />
+              <StatBadge label="Country" value={player.country} />
             </div>
           </article>
         ))}

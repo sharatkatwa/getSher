@@ -15,6 +15,7 @@ const Teams = () => {
   const {teams, isLoading, isError,}  = useTeams()
   
   // console.log(Teams);
+  
   return (
     <div className="space-y-lg px-md py-lg lg:px-lg">
       <PageHeader

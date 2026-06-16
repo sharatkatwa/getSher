@@ -15,7 +15,7 @@ const AdminTable = ({ columns, rows, renderActions }) => {
           </thead>
           <tbody>
             {rows.map((row) => (
-              <tr className="border-t border-outline-variant" key={row.id}>
+              <tr className="border-t border-outline-variant" key={row.id || row._id}>
                 {columns.map((column) => (
                   <td className="px-md py-sm text-body-sm text-on-surface" key={column.key}>
                     {/* Optional column renderers keep table data-driven without custom tables per page. */}

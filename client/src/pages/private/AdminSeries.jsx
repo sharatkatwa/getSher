@@ -3,25 +3,35 @@ import AdminTable from "../../components/admin/AdminTable";
 import AdminToolbar from "../../components/admin/AdminToolbar";
 import PageHeader from "../../components/shared/PageHeader";
 import StatusPill from "../../components/shared/StatusPill";
+import { useSeries } from "../../hooks/useSeries";
 
-// Static table rows; later this page should use series queries and mutations.
-const series = [
-  { id: 1, name: "Border-Gavaskar Trophy", season: "2026", status: "LIVE", matches: 5 },
-  { id: 2, name: "England Tour of SA", season: "2026", status: "LIVE", matches: 3 },
-  { id: 3, name: "Asia T20 Challenge", season: "2026", status: "UPCOMING", matches: 12 },
-  { id: 4, name: "World Test Championship", season: "2025-27", status: "LIVE", matches: 42 },
-];
+const toneByStatus = {
+  LIVE: "live",
+  UPCOMING: "upcoming",
+  COMPLETED: "completed",
+};
 
 const AdminSeries = () => {
+  const { data: series = [], isError, isLoading } = useSeries();
+  const liveCount = series.filter((item) => item.status === "LIVE").length;
+  const rows = series.map((item) => ({
+    ...item,
+    matches: item.matches?.length || 0,
+  }));
+
   return (
     <div className="space-y-lg px-md py-lg lg:px-lg">
       <PageHeader
-        action={<StatusPill tone="live">2 Live Series</StatusPill>}
+        action={<StatusPill tone="live">{liveCount} Live Series</StatusPill>}
         description="Create tournament seasons, track status, and prepare series metadata for fixtures."
         eyebrow="Calendar"
         title="Manage Series"
       />
       <AdminToolbar primaryAction="Create Series" searchPlaceholder="Search series name or season..." />
+
+      {isLoading && <StatusPill tone="neutral">Loading series...</StatusPill>}
+      {isError && <StatusPill tone="live">Failed to load series</StatusPill>}
+
       <AdminTable
         columns={[
           { key: "name", label: "Series" },
@@ -31,9 +41,7 @@ const AdminSeries = () => {
             key: "status",
             label: "Status",
             render: (row) => (
-              <StatusPill tone={row.status === "LIVE" ? "live" : "upcoming"}>
-                {row.status}
-              </StatusPill>
+              <StatusPill tone={toneByStatus[row.status] || "neutral"}>{row.status}</StatusPill>
             ),
           },
         ]}
@@ -43,7 +51,7 @@ const AdminSeries = () => {
             <AdminActionButton variant="secondary">Edit</AdminActionButton>
           </>
         )}
-        rows={series}
+        rows={rows}
       />
     </div>
   );

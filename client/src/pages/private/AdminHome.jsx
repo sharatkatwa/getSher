@@ -2,26 +2,58 @@ import AdminMetricCard from "../../components/admin/AdminMetricCard";
 import AdminTable from "../../components/admin/AdminTable";
 import PageHeader from "../../components/shared/PageHeader";
 import StatusPill from "../../components/shared/StatusPill";
-
-// Static dashboard metrics until admin summary endpoints are connected.
-const metrics = [
-  { icon: "refresh", label: "Players", value: "128", helper: "18 recently updated profiles" },
-  { icon: "teams", label: "Teams", value: "12", helper: "4 squads need final review" },
-  { icon: "trophy", label: "Series", value: "6", helper: "2 live and 1 upcoming" },
-  { icon: "chart", label: "Matches", value: "42", helper: "3 scheduled this week" },
-];
-
-const activityRows = [
-  { id: 1, event: "India squad updated", owner: "Admin", type: "Team", status: "Published" },
-  { id: 2, event: "BGT match venue changed", owner: "Scorer", type: "Match", status: "Review" },
-  { id: 3, event: "England tour created", owner: "Admin", type: "Series", status: "Draft" },
-];
+import { useMatches } from "../../hooks/useMatches";
+import { usePlayers } from "../../hooks/usePlayers";
+import { useSeries } from "../../hooks/useSeries";
+import { useTeams } from "../../hooks/useTeams";
 
 const AdminHome = () => {
+  const { data: players = [] } = usePlayers();
+  const { data: series = [] } = useSeries();
+  const { teams = [] } = useTeams();
+  const { data } = useMatches();
+  const matches = data?.matches || data || [];
+  const liveMatches = matches.filter((match) => match.status === "LIVE");
+
+  const metrics = [
+    {
+      icon: "refresh",
+      label: "Players",
+      value: players.length,
+      helper: "Profiles available for squads",
+    },
+    {
+      icon: "teams",
+      label: "Teams",
+      value: teams.length,
+      helper: "Registered teams",
+    },
+    {
+      icon: "trophy",
+      label: "Series",
+      value: series.length,
+      helper: `${series.filter((item) => item.status === "LIVE").length} live series`,
+    },
+    {
+      icon: "chart",
+      label: "Matches",
+      value: matches.length,
+      helper: `${liveMatches.length} currently live`,
+    },
+  ];
+
+  const activityRows = matches.slice(0, 5).map((match) => ({
+    _id: match._id,
+    event: `${match.team1?.name || "Team 1"} vs ${match.team2?.name || "Team 2"}`,
+    owner: match.seriesId?.name || "Match Ops",
+    type: "Match",
+    status: match.status,
+  }));
+
   return (
     <div className="space-y-lg px-md py-lg lg:px-lg">
       <PageHeader
-        action={<StatusPill tone="live">3 Live Tasks</StatusPill>}
+        action={<StatusPill tone="live">{liveMatches.length} Live Tasks</StatusPill>}
         description="Manage match operations, teams, players, series, and playing XI setup from one control surface."
         eyebrow="Overview"
         title="Admin Dashboard"
@@ -36,7 +68,7 @@ const AdminHome = () => {
       <section className="space-y-md">
         <div className="flex items-center justify-between">
           <h2 className="text-title-md font-extrabold text-primary">Recent Operations</h2>
-          <StatusPill tone="neutral">Static Preview</StatusPill>
+          <StatusPill tone="neutral">Latest Matches</StatusPill>
         </div>
         <AdminTable
           columns={[
@@ -47,7 +79,7 @@ const AdminHome = () => {
               key: "status",
               label: "Status",
               render: (row) => (
-                <StatusPill tone={row.status === "Published" ? "completed" : "upcoming"}>
+                <StatusPill tone={row.status === "LIVE" ? "live" : "upcoming"}>
                   {row.status}
                 </StatusPill>
               ),

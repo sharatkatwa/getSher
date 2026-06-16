@@ -3,16 +3,17 @@ import AdminTable from "../../components/admin/AdminTable";
 import AdminToolbar from "../../components/admin/AdminToolbar";
 import PageHeader from "../../components/shared/PageHeader";
 import StatusPill from "../../components/shared/StatusPill";
-
-// Static table rows; later this page should use team queries and admin mutations.
-const teams = [
-  { id: 1, name: "India", shortName: "IND", players: 18, color: "Blue", status: "Published" },
-  { id: 2, name: "Australia", shortName: "AUS", players: 17, color: "Green", status: "Published" },
-  { id: 3, name: "England", shortName: "ENG", players: 16, color: "Navy", status: "Draft" },
-  { id: 4, name: "South Africa", shortName: "RSA", players: 15, color: "Green", status: "Published" },
-];
+import { useTeams } from "../../hooks/useTeams";
 
 const AdminTeams = () => {
+  const { teams = [], isError, isLoading } = useTeams();
+  const rows = teams.map((team) => ({
+    ...team,
+    players: team.squadPlayers?.length || 0,
+    color: team.primaryColor || "N/A",
+    status: team.isDeleted ? "Deleted" : "Published",
+  }));
+
   return (
     <div className="space-y-lg px-md py-lg lg:px-lg">
       <PageHeader
@@ -22,6 +23,10 @@ const AdminTeams = () => {
         title="Manage Teams"
       />
       <AdminToolbar primaryAction="Create Team" searchPlaceholder="Search team or short name..." />
+
+      {isLoading && <StatusPill tone="neutral">Loading teams...</StatusPill>}
+      {isError && <StatusPill tone="live">Failed to load teams</StatusPill>}
+
       <AdminTable
         columns={[
           { key: "name", label: "Team" },
@@ -44,7 +49,7 @@ const AdminTeams = () => {
             <AdminActionButton variant="secondary">Edit</AdminActionButton>
           </>
         )}
-        rows={teams}
+        rows={rows}
       />
     </div>
   );

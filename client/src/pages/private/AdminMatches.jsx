@@ -3,25 +3,39 @@ import AdminTable from "../../components/admin/AdminTable";
 import AdminToolbar from "../../components/admin/AdminToolbar";
 import PageHeader from "../../components/shared/PageHeader";
 import StatusPill from "../../components/shared/StatusPill";
+import { useMatches } from "../../hooks/useMatches";
 
-// Static table rows; later this page should use match queries and mutations.
-const matches = [
-  { id: 1, match: "India vs Australia", series: "BGT", venue: "MCG", startTime: "Today 16:30", status: "LIVE" },
-  { id: 2, match: "England vs South Africa", series: "ENG Tour", venue: "Cape Town", startTime: "Today 18:00", status: "LIVE" },
-  { id: 3, match: "WI vs Bangladesh", series: "ODI Tri-Series", venue: "Barbados", startTime: "Tomorrow 14:00", status: "UPCOMING" },
-  { id: 4, match: "SL vs Afghanistan", series: "T20I Series", venue: "Colombo", startTime: "Nov 22 09:30", status: "UPCOMING" },
-];
+const toneByStatus = {
+  LIVE: "live",
+  UPCOMING: "upcoming",
+  COMPLETED: "completed",
+  ABANDONED: "neutral",
+};
 
 const AdminMatches = () => {
+  const { data, isError, isLoading } = useMatches();
+  const matches = data?.matches || data || [];
+  const upcomingCount = matches.filter((match) => match.status === "UPCOMING").length;
+  const rows = matches.map((match) => ({
+    ...match,
+    match: `${match.team1?.name || "Team 1"} vs ${match.team2?.name || "Team 2"}`,
+    series: match.seriesId?.name || match.matchNumber || "N/A",
+    startTime: match.startTime ? new Date(match.startTime).toLocaleString() : "TBA",
+  }));
+
   return (
     <div className="space-y-lg px-md py-lg lg:px-lg">
       <PageHeader
-        action={<StatusPill tone="upcoming">2 Upcoming</StatusPill>}
+        action={<StatusPill tone="upcoming">{upcomingCount} Upcoming</StatusPill>}
         description="Schedule fixtures, update venues, manage status, and prepare match operations."
         eyebrow="Fixtures"
         title="Manage Matches"
       />
       <AdminToolbar primaryAction="Schedule Match" searchPlaceholder="Search match, venue, or series..." />
+
+      {isLoading && <StatusPill tone="neutral">Loading matches...</StatusPill>}
+      {isError && <StatusPill tone="live">Failed to load matches</StatusPill>}
+
       <AdminTable
         columns={[
           { key: "match", label: "Match" },
@@ -32,9 +46,7 @@ const AdminMatches = () => {
             key: "status",
             label: "Status",
             render: (row) => (
-              <StatusPill tone={row.status === "LIVE" ? "live" : "upcoming"}>
-                {row.status}
-              </StatusPill>
+              <StatusPill tone={toneByStatus[row.status] || "neutral"}>{row.status}</StatusPill>
             ),
           },
         ]}
@@ -44,7 +56,7 @@ const AdminMatches = () => {
             <AdminActionButton variant="secondary">Edit</AdminActionButton>
           </>
         )}
-        rows={matches}
+        rows={rows}
       />
     </div>
   );
