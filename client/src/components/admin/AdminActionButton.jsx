@@ -5,10 +5,11 @@ const variants = {
   danger: "bg-error text-on-error hover:brightness-110",
 };
 
-const AdminActionButton = ({ children, variant = "primary" }) => {
+const AdminActionButton = ({ children, variant = "primary", onClick }) => {
   return (
     <button
       className={`h-10 rounded-md px-md text-body-sm font-extrabold transition ${variants[variant]}`}
+      onClick={onClick}
       type="button"
     >
       {children}

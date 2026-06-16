@@ -15,24 +15,23 @@ class MatchRepository {
     return await Match.findOne(query)
       // .populate("seriesId", "name")
       .populate("team1 team2", "name logo")
+      .populate("playingXI.team1.player playingXI.team2.player", "name role country imageUrl")
       .populate("winner", "name");
   }
 
-  // async findAll({ page = 1, limit = 10 } = {}) {
-  //   const skip = (page - 1) * limit;
-
-  //   return await Match.find({ isDeleted: false })
-  //     .sort({ startTime: -1 })
-  //     .skip(skip)
-  //     .limit(limit)
-  //     .populate("seriesId", "name")
-  //     .populate("team1 team2", "name logo");
-  // }
 
 
-async findAll() {
-  return [];
-}
+  async findAll({ page = 1, limit = 10 } = {}) {
+    const skip = (page - 1) * limit;
+
+    return await Match.find({ isDeleted: false })
+      .sort({ startTime: -1 })
+      .skip(skip)
+      .limit(limit)
+      .populate("seriesId", "name")
+      .populate("team1 team2", "name logo")
+      .populate("playingXI.team1.player playingXI.team2.player", "name role country imageUrl");
+  }
 
   async findDuplicateMatch({ seriesId, team1, team2, startTime }) {
     return await Match.findOne({
@@ -53,13 +52,15 @@ async findAll() {
       .sort({ startTime: 1 })
       .skip(skip)
       .limit(limit)
-      .populate("team1 team2", "name logo");
+      .populate("team1 team2", "name logo")
+      .populate("playingXI.team1.player playingXI.team2.player", "name role country imageUrl");
   }
 
   async findBySeries(seriesId) {
     return await Match.find({ seriesId, isDeleted: false })
       .sort({ startTime: 1 })
-      .populate("team1 team2", "name logo");
+      .populate("team1 team2", "name logo")
+      .populate("playingXI.team1.player playingXI.team2.player", "name role country imageUrl");
   }
 
 async findByTeam(teamId) {
@@ -72,7 +73,8 @@ async findByTeam(teamId) {
   })
     .sort({ startTime: -1 })
     .populate("seriesId", "name")
-    .populate("team1 team2", "name logo");
+    .populate("team1 team2", "name logo")
+    .populate("playingXI.team1.player playingXI.team2.player", "name role country imageUrl");
 }
 
   async update(matchId, updateData) {
@@ -115,7 +117,7 @@ async findByTeam(teamId) {
     { _id: matchId, isDeleted: false },
     { $set: { playingXI } },
     { new: true },
-  );
+  ).populate("playingXI.team1.player playingXI.team2.player", "name role country imageUrl");
 }
 }
 

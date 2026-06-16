@@ -1,12 +1,15 @@
 import matchRepository from "../../../repository/match.repository.js";
-import seriesRepository from "../../../repository/series.repository.js";
-import teamRepository from "../../../repository/team.repository.js";
+import SeriesRepository from "../../../repository/series.repository.js";
+import TeamRepository from "../../../repository/team.repository.js";
 import mongoose from "mongoose";
 import { MATCH_STATUS } from "../../../constants/model.constant.js";
 import {
   NotFoundError,
   ValidationError,
 } from "../../../shared/error/custom.errors.js";
+
+const seriesRepository = new SeriesRepository();
+const teamRepository = new TeamRepository();
 
 class MatchService {
   async ensureMatchExists(matchId) {

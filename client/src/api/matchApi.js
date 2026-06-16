@@ -20,6 +20,11 @@ export const deleteMatch = async (id) => {
   return response.data;
 };
 
+export const getMatchById = async (id) => {
+const response = await api.get(`/match/${id}`);
+return response.data;
+};
+
 export const updatePlayingXI = async (id, data) => {
   const response = await api.patch(
     `/match/${id}/playing-xi`,

@@ -8,13 +8,38 @@ import rateLimit from 'express-rate-limit'
 import cookieParser from 'cookie-parser'
 
 export default function securityMiddleware(app) {
+  const allowedOrigins = env.CORS_ORIGIN.split(",").map((origin) => origin.trim());
+  const allowedMethods = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"];
+  const allowedHeaders = ["Content-Type", "Authorization"];
+  const corsOptions = {
+    origin: allowedOrigins,
+    credentials: true,
+    methods: allowedMethods,
+    allowedHeaders,
+    optionsSuccessStatus: 204,
+  };
 
 // for allowing cross origin requests.
+  app.use((req, res, next) => {
+    const origin = req.get("Origin");
+
+    if (origin && allowedOrigins.includes(origin)) {
+      res.setHeader("Access-Control-Allow-Origin", origin);
+      res.setHeader("Vary", "Origin");
+      res.setHeader("Access-Control-Allow-Credentials", "true");
+      res.setHeader("Access-Control-Allow-Methods", allowedMethods.join(","));
+      res.setHeader("Access-Control-Allow-Headers", allowedHeaders.join(","));
+    }
+
+    if (req.method === "OPTIONS") {
+      return res.sendStatus(204);
+    }
+
+    next();
+  });
+
   app.use(
-    cors({
-      origin: env.CORS_ORIGIN.split(",").map((origin) => origin.trim()),
-      credentials: true,
-    }),
+    cors(corsOptions),
   );
   
   // to get cookies in request

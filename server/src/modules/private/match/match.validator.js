@@ -1,6 +1,8 @@
 import { body } from "express-validator";
 import { MATCH_STATUS } from "../../../constants/model.constant.js";
 
+
+
 export const createMatchValidator = [
   body("seriesId")
     .notEmpty()

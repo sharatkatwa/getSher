@@ -7,7 +7,6 @@ const navItems = [
   { label: "Manage Teams", icon: "teams", to: "/admin/teams" },
   { label: "Manage Series", icon: "trophy", to: "/admin/series" },
   { label: "Manage Matches", icon: "chart", to: "/admin/matches" },
-  { label: "Playing XI", icon: "shield", to: "/admin/playing-xi" },
 ];
 
 const utilityItems = [
@@ -32,7 +31,7 @@ const AdminSidebarContent = ({ onNavigate }) => {
           <NavLink
             className={({ isActive }) =>
               `flex h-12 w-full items-center gap-md rounded-md px-md text-left text-body-md transition ${
-                isActive
+                isActive && item.exactActive !== false
                   ? "bg-primary font-bold text-on-primary"
                   : "text-on-surface-variant hover:bg-surface-container"
               }`

@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 
 const playingPlayerSchema = new Schema(
   {
-    player: { type: Schema.Types.ObjectId, ref: "Player", required: true },
+    player: { type: Schema.Types.ObjectId, ref: "player", required: true },
     isCaptain: { type: Boolean, default: false },
     isWicketKeeper: { type: Boolean, default: false },
   },
@@ -14,7 +14,7 @@ const playingPlayerSchema = new Schema(
 
 const matchSchema = new Schema(
   {
-    seriesId: { type: Schema.Types.ObjectId, ref: "series", required: true },
+    seriesId: { type: Schema.Types.ObjectId, ref: "Series", required: true },
     matchNumber: String,
     venue: { type: String, required: true, trim: true },
     startTime: { type: Date, required: true },
@@ -46,6 +46,6 @@ matchSchema.index({ seriesId: 1, startTime: 1, isDeleted: 1 });
 matchSchema.index({ team1: 1, startTime: -1, isDeleted: 1 });
 matchSchema.index({ team2: 1, startTime: -1, isDeleted: 1 });
 
-const Match = mongoose.model("Match", matchSchema);
+const Match = mongoose.model("match", matchSchema);
 
 export default Match;

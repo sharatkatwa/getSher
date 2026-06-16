@@ -16,6 +16,8 @@ import AdminPlayers from "./pages/private/AdminPlayers";
 import AdminPlayingXI from "./pages/private/AdminPlayingXI";
 import AdminSeries from "./pages/private/AdminSeries";
 import AdminTeams from "./pages/private/AdminTeams";
+import CreateMatch from "./pages/private/CreateMatch";
+import EditMatch from "./pages/private/EditMatch";
 
 const AppRoutes = () => {
   const router = createBrowserRouter([
@@ -80,7 +82,15 @@ const AppRoutes = () => {
           element: <AdminMatches />,
         },
         {
-          path: "playing-xi",
+          path: "matches/create",
+          element: <CreateMatch />,
+        },
+        {
+          path: "matches/edit/:id",
+          element: <EditMatch />,
+        },
+        {
+          path: "playing-xi/:matchId",
           element: <AdminPlayingXI />,
         },
       ],
