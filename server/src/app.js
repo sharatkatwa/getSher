@@ -10,6 +10,7 @@ import notFound from "./middlewares/notFound.middleware.js";
 
 // routes import statements
 import authRoutes from "./modules/public/auth/auth.router.js";
+import publicHomeRoutes from "./modules/public/home/home.route.js";
 import privateTeamRoutes from "./modules/private/team/team.route.js";
 import publicTeamRoutes from "./modules/public/team/team.route.js";
 import privateSeriesRoutes from "./modules/private/series/series.router.js";
@@ -45,6 +46,7 @@ export default function createApp() {
 
   // Public Routes
   app.use("/api/auth", authRoutes);
+  app.use("/api/home", publicHomeRoutes);
   app.use("/api/series", publicSeriesRoutes);
   app.use("/api/team", publicTeamRoutes);
   app.use("/api/match", publicMatchRoutes);

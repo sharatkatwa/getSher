@@ -6,26 +6,55 @@ import AdminTable from "../../components/admin/AdminTable";
 import AdminToolbar from "../../components/admin/AdminToolbar";
 import PageHeader from "../../components/shared/PageHeader";
 import StatusPill from "../../components/shared/StatusPill";
-import { useCreatePlayer, usePlayers } from "../../hooks/usePlayers";
+import { useCreatePlayer, usePlayers, useUpdatePlayer } from "../../hooks/usePlayers";
 
 const AdminPlayers = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingPlayer, setEditingPlayer] = useState(null);
   const { register, handleSubmit, reset } = useForm({
     defaultValues: { role: "BATSMAN" },
   });
   const { data: players = [], isError, isLoading } = usePlayers();
   const createPlayerMutation = useCreatePlayer();
+  const updatePlayerMutation = useUpdatePlayer();
   const rows = players.map((player) => ({
     ...player,
     status: player.isDeleted ? "Deleted" : "Active",
     style: player.battingStyle || player.bowlingStyle || "N/A",
   }));
 
-  const handleCreatePlayer = (data) => {
-    createPlayerMutation.mutate(data, {
+  const openCreateForm = () => {
+    setEditingPlayer(null);
+    reset({ role: "BATSMAN" });
+    setIsFormOpen((isOpen) => !isOpen);
+  };
+
+  const openEditForm = (player) => {
+    setEditingPlayer(player);
+    reset({
+      name: player.name || "",
+      role: player.role || "BATSMAN",
+      country: player.country || "",
+      imageUrl: player.imageUrl || "",
+      battingStyle: player.battingStyle || "",
+      bowlingStyle: player.bowlingStyle || "",
+    });
+    setIsFormOpen(true);
+  };
+
+  const closeForm = () => {
+    setEditingPlayer(null);
+    reset({ role: "BATSMAN" });
+    setIsFormOpen(false);
+  };
+
+  const handleSavePlayer = (data) => {
+    const mutation = editingPlayer ? updatePlayerMutation : createPlayerMutation;
+    const variables = editingPlayer ? { id: editingPlayer._id, data } : data;
+
+    mutation.mutate(variables, {
       onSuccess: () => {
-        reset();
-        setIsFormOpen(false);
+        closeForm();
       },
     });
   };
@@ -39,13 +68,13 @@ const AdminPlayers = () => {
         title="Manage Players"
       />
       <AdminToolbar
-        onPrimaryAction={() => setIsFormOpen((isOpen) => !isOpen)}
+        onPrimaryAction={openCreateForm}
         primaryAction={isFormOpen ? "Close Form" : "Add Player"}
         searchPlaceholder="Search player name, role, country..."
       />
 
       {isFormOpen && (
-        <form className="grid gap-md rounded-lg border border-outline-variant bg-surface-container-lowest p-md shadow-card md:grid-cols-2 xl:grid-cols-3" onSubmit={handleSubmit(handleCreatePlayer)}>
+        <form className="grid gap-md rounded-lg border border-outline-variant bg-surface-container-lowest p-md shadow-card md:grid-cols-2 xl:grid-cols-3" onSubmit={handleSubmit(handleSavePlayer)}>
           <input {...register("name", { required: true })} className="h-10 rounded-md border border-outline-variant bg-surface px-md text-body-sm outline-none focus:border-primary" placeholder="Player name" />
           <select {...register("role", { required: true })} className="h-10 rounded-md border border-outline-variant bg-surface px-md text-body-sm outline-none focus:border-primary">
             <option>BATSMAN</option>
@@ -57,12 +86,18 @@ const AdminPlayers = () => {
           <input {...register("imageUrl", { required: true })} className="h-10 rounded-md border border-outline-variant bg-surface px-md text-body-sm outline-none focus:border-primary" placeholder="Image URL" />
           <input {...register("battingStyle", { required: true })} className="h-10 rounded-md border border-outline-variant bg-surface px-md text-body-sm outline-none focus:border-primary" placeholder="Batting style" />
           <input {...register("bowlingStyle")} className="h-10 rounded-md border border-outline-variant bg-surface px-md text-body-sm outline-none focus:border-primary" placeholder="Bowling style" />
-          {createPlayerMutation.isError && (
-            <StatusPill tone="live">Failed to create player</StatusPill>
+          {(createPlayerMutation.isError || updatePlayerMutation.isError) && (
+            <StatusPill tone="live">Failed to save player</StatusPill>
           )}
           <div className="flex justify-end gap-sm md:col-span-2 xl:col-span-3">
-            <AdminActionButton variant="secondary" onClick={() => setIsFormOpen(false)}>Cancel</AdminActionButton>
-            <AdminActionButton type="submit">{createPlayerMutation.isPending ? "Saving..." : "Save Player"}</AdminActionButton>
+            <AdminActionButton variant="secondary" onClick={closeForm}>Cancel</AdminActionButton>
+            <AdminActionButton type="submit">
+              {createPlayerMutation.isPending || updatePlayerMutation.isPending
+                ? "Saving..."
+                : editingPlayer
+                  ? "Update Player"
+                  : "Save Player"}
+            </AdminActionButton>
           </div>
         </form>
       )}
@@ -86,9 +121,9 @@ const AdminPlayers = () => {
             ),
           },
         ]}
-        renderActions={() => (
+        renderActions={(row) => (
           <>
-            <AdminActionButton variant="secondary">Edit</AdminActionButton>
+            <AdminActionButton variant="secondary" onClick={() => openEditForm(row)}>Edit</AdminActionButton>
             <AdminActionButton variant="danger">Delete</AdminActionButton>
           </>
         )}

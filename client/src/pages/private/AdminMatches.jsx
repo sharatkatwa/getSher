@@ -6,7 +6,7 @@ import AdminTable from "../../components/admin/AdminTable";
 import AdminToolbar from "../../components/admin/AdminToolbar";
 import PageHeader from "../../components/shared/PageHeader";
 import StatusPill from "../../components/shared/StatusPill";
-import { useCreateMatch, useMatches } from "../../hooks/useMatches";
+import { useCreateMatch, useMatches, useUpdateMatch } from "../../hooks/useMatches";
 import { useSeries } from "../../hooks/useSeries";
 import { useTeams } from "../../hooks/useTeams";
 
@@ -19,11 +19,13 @@ const toneByStatus = {
 
 const AdminMatches = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingMatch, setEditingMatch] = useState(null);
   const { register, handleSubmit, reset } = useForm();
   const { data, isError, isLoading } = useMatches();
   const { data: series = [] } = useSeries();
   const { teams = [] } = useTeams();
   const createMatchMutation = useCreateMatch();
+  const updateMatchMutation = useUpdateMatch();
   const matches = data?.matches || data || [];
   const upcomingCount = matches.filter((match) => match.status === "UPCOMING").length;
   const rows = matches.map((match) => ({
@@ -33,11 +35,46 @@ const AdminMatches = () => {
     startTime: match.startTime ? new Date(match.startTime).toLocaleString() : "TBA",
   }));
 
-  const handleCreateMatch = (formData) => {
-    createMatchMutation.mutate(formData, {
+  const getInputDateTime = (value) => {
+    if (!value) return "";
+    const date = new Date(value);
+    return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+      .toISOString()
+      .slice(0, 16);
+  };
+
+  const openCreateForm = () => {
+    setEditingMatch(null);
+    reset();
+    setIsFormOpen((isOpen) => !isOpen);
+  };
+
+  const openEditForm = (match) => {
+    setEditingMatch(match);
+    reset({
+      seriesId: match.seriesId?._id || match.seriesId || "",
+      team1: match.team1?._id || match.team1 || "",
+      team2: match.team2?._id || match.team2 || "",
+      matchNumber: match.matchNumber || "",
+      venue: match.venue || "",
+      startTime: getInputDateTime(match.startTime),
+    });
+    setIsFormOpen(true);
+  };
+
+  const closeForm = () => {
+    setEditingMatch(null);
+    reset();
+    setIsFormOpen(false);
+  };
+
+  const handleSaveMatch = (formData) => {
+    const mutation = editingMatch ? updateMatchMutation : createMatchMutation;
+    const variables = editingMatch ? { id: editingMatch._id, data: formData } : formData;
+
+    mutation.mutate(variables, {
       onSuccess: () => {
-        reset();
-        setIsFormOpen(false);
+        closeForm();
       },
     });
   };
@@ -51,13 +88,13 @@ const AdminMatches = () => {
         title="Manage Matches"
       />
       <AdminToolbar
-        onPrimaryAction={() => setIsFormOpen((isOpen) => !isOpen)}
+        onPrimaryAction={openCreateForm}
         primaryAction={isFormOpen ? "Close Form" : "Schedule Match"}
         searchPlaceholder="Search match, venue, or series..."
       />
 
       {isFormOpen && (
-        <form className="grid gap-md rounded-lg border border-outline-variant bg-surface-container-lowest p-md shadow-card md:grid-cols-2 xl:grid-cols-3" onSubmit={handleSubmit(handleCreateMatch)}>
+        <form className="grid gap-md rounded-lg border border-outline-variant bg-surface-container-lowest p-md shadow-card md:grid-cols-2 xl:grid-cols-3" onSubmit={handleSubmit(handleSaveMatch)}>
           <select {...register("seriesId", { required: true })} className="h-10 rounded-md border border-outline-variant bg-surface px-md text-body-sm outline-none focus:border-primary">
             <option value="">Select series</option>
             {series.map((item) => (
@@ -85,12 +122,18 @@ const AdminMatches = () => {
           <input {...register("matchNumber")} className="h-10 rounded-md border border-outline-variant bg-surface px-md text-body-sm outline-none focus:border-primary" placeholder="Match number" />
           <input {...register("venue", { required: true })} className="h-10 rounded-md border border-outline-variant bg-surface px-md text-body-sm outline-none focus:border-primary" placeholder="Venue" />
           <input {...register("startTime", { required: true })} className="h-10 rounded-md border border-outline-variant bg-surface px-md text-body-sm outline-none focus:border-primary" type="datetime-local" />
-          {createMatchMutation.isError && (
-            <StatusPill tone="live">Failed to create match</StatusPill>
+          {(createMatchMutation.isError || updateMatchMutation.isError) && (
+            <StatusPill tone="live">Failed to save match</StatusPill>
           )}
           <div className="flex justify-end gap-sm md:col-span-2 xl:col-span-3">
-            <AdminActionButton variant="secondary" onClick={() => setIsFormOpen(false)}>Cancel</AdminActionButton>
-            <AdminActionButton type="submit">{createMatchMutation.isPending ? "Saving..." : "Save Match"}</AdminActionButton>
+            <AdminActionButton variant="secondary" onClick={closeForm}>Cancel</AdminActionButton>
+            <AdminActionButton type="submit">
+              {createMatchMutation.isPending || updateMatchMutation.isPending
+                ? "Saving..."
+                : editingMatch
+                  ? "Update Match"
+                  : "Save Match"}
+            </AdminActionButton>
           </div>
         </form>
       )}
@@ -112,10 +155,10 @@ const AdminMatches = () => {
             ),
           },
         ]}
-        renderActions={() => (
+        renderActions={(row) => (
           <>
             <AdminActionButton variant="secondary">Lineups</AdminActionButton>
-            <AdminActionButton variant="secondary">Edit</AdminActionButton>
+            <AdminActionButton variant="secondary" onClick={() => openEditForm(row)}>Edit</AdminActionButton>
           </>
         )}
         rows={rows}

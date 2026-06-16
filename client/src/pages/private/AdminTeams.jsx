@@ -7,14 +7,16 @@ import AdminToolbar from "../../components/admin/AdminToolbar";
 import PageHeader from "../../components/shared/PageHeader";
 import StatusPill from "../../components/shared/StatusPill";
 import { usePlayers } from "../../hooks/usePlayers";
-import { useCreateTeam, useTeams } from "../../hooks/useTeams";
+import { useCreateTeam, useTeams, useUpdateTeam } from "../../hooks/useTeams";
 
 const AdminTeams = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingTeam, setEditingTeam] = useState(null);
   const { register, handleSubmit, reset } = useForm();
   const { teams = [], isError, isLoading } = useTeams();
   const { data: players = [] } = usePlayers();
   const createTeamMutation = useCreateTeam();
+  const updateTeamMutation = useUpdateTeam();
   const rows = teams.map((team) => ({
     ...team,
     players: team.squadPlayers?.length || 0,
@@ -22,17 +24,42 @@ const AdminTeams = () => {
     status: team.isDeleted ? "Deleted" : "Published",
   }));
 
-  const handleCreateTeam = (data) => {
+  const openCreateForm = () => {
+    setEditingTeam(null);
+    reset();
+    setIsFormOpen((isOpen) => !isOpen);
+  };
+
+  const openEditForm = (team) => {
+    setEditingTeam(team);
+    reset({
+      name: team.name || "",
+      shortName: team.shortName || "",
+      logo: team.logo || "",
+      primaryColor: team.primaryColor || "",
+      squadPlayers: team.squadPlayers?.map((player) => player._id || player) || [],
+    });
+    setIsFormOpen(true);
+  };
+
+  const closeForm = () => {
+    setEditingTeam(null);
+    reset();
+    setIsFormOpen(false);
+  };
+
+  const handleSaveTeam = (data) => {
     const payload = {
       ...data,
       shortName: data.shortName.toUpperCase(),
       squadPlayers: data.squadPlayers?.length ? data.squadPlayers : undefined,
     };
+    const mutation = editingTeam ? updateTeamMutation : createTeamMutation;
+    const variables = editingTeam ? { id: editingTeam._id, data: payload } : payload;
 
-    createTeamMutation.mutate(payload, {
+    mutation.mutate(variables, {
       onSuccess: () => {
-        reset();
-        setIsFormOpen(false);
+        closeForm();
       },
     });
   };
@@ -46,13 +73,13 @@ const AdminTeams = () => {
         title="Manage Teams"
       />
       <AdminToolbar
-        onPrimaryAction={() => setIsFormOpen((isOpen) => !isOpen)}
+        onPrimaryAction={openCreateForm}
         primaryAction={isFormOpen ? "Close Form" : "Create Team"}
         searchPlaceholder="Search team or short name..."
       />
 
       {isFormOpen && (
-        <form className="grid gap-md rounded-lg border border-outline-variant bg-surface-container-lowest p-md shadow-card md:grid-cols-2 xl:grid-cols-4" onSubmit={handleSubmit(handleCreateTeam)}>
+        <form className="grid gap-md rounded-lg border border-outline-variant bg-surface-container-lowest p-md shadow-card md:grid-cols-2 xl:grid-cols-4" onSubmit={handleSubmit(handleSaveTeam)}>
           <input {...register("name", { required: true })} className="h-10 rounded-md border border-outline-variant bg-surface px-md text-body-sm outline-none focus:border-primary" placeholder="Team name" />
           <input {...register("shortName", { required: true })} className="h-10 rounded-md border border-outline-variant bg-surface px-md text-body-sm uppercase outline-none focus:border-primary" placeholder="Short name" />
           <input {...register("logo", { required: true })} className="h-10 rounded-md border border-outline-variant bg-surface px-md text-body-sm outline-none focus:border-primary" placeholder="Logo URL" />
@@ -64,12 +91,18 @@ const AdminTeams = () => {
               </option>
             ))}
           </select>
-          {createTeamMutation.isError && (
-            <StatusPill tone="live">Failed to create team</StatusPill>
+          {(createTeamMutation.isError || updateTeamMutation.isError) && (
+            <StatusPill tone="live">Failed to save team</StatusPill>
           )}
           <div className="flex justify-end gap-sm md:col-span-2 xl:col-span-4">
-            <AdminActionButton variant="secondary" onClick={() => setIsFormOpen(false)}>Cancel</AdminActionButton>
-            <AdminActionButton type="submit">{createTeamMutation.isPending ? "Saving..." : "Save Team"}</AdminActionButton>
+            <AdminActionButton variant="secondary" onClick={closeForm}>Cancel</AdminActionButton>
+            <AdminActionButton type="submit">
+              {createTeamMutation.isPending || updateTeamMutation.isPending
+                ? "Saving..."
+                : editingTeam
+                  ? "Update Team"
+                  : "Save Team"}
+            </AdminActionButton>
           </div>
         </form>
       )}
@@ -93,10 +126,10 @@ const AdminTeams = () => {
             ),
           },
         ]}
-        renderActions={() => (
+        renderActions={(row) => (
           <>
             <AdminActionButton variant="secondary">Squad</AdminActionButton>
-            <AdminActionButton variant="secondary">Edit</AdminActionButton>
+            <AdminActionButton variant="secondary" onClick={() => openEditForm(row)}>Edit</AdminActionButton>
           </>
         )}
         rows={rows}

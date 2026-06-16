@@ -51,6 +51,15 @@ class MatchRepository {
       .populate("team1 team2", "name logo");
   }
 
+  async findHomeMatchesByStatus(status, { sort = { startTime: 1 }, limit = 6 } = {}) {
+    return await Match.find({ status, isDeleted: false })
+      .sort(sort)
+      .limit(limit)
+      .populate("seriesId", "name shortName")
+      .populate("team1 team2", "name shortName logo primaryColor")
+      .lean();
+  }
+
   async findBySeries(seriesId) {
     return await Match.find({ seriesId, isDeleted: false })
       .sort({ startTime: 1 })

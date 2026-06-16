@@ -23,6 +23,13 @@ class ScoreRepository {
       .lean();
   }
 
+  async findByMatchIds(matchIds) {
+    return await Score.find({ matchId: { $in: matchIds } })
+      .sort({ innings: 1 })
+      .populate("battingTeam", "name shortName logo")
+      .lean();
+  }
+
   async updateById(id, payload) {
     return await Score.findByIdAndUpdate(id, payload, {
       new: true,
