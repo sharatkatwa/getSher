@@ -8,6 +8,7 @@ import {
   NotFoundError,
   ValidationError,
 } from "../../../shared/error/custom.errors.js";
+import { emitToMatch } from "../../../sockets/socketGateway.js";
 
 const validateObjectId = (id, fieldName) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -56,7 +57,7 @@ class ScoreService {
       throw new ConflictError("Score already exists for this innings");
     }
 
-    return await scoreRepository.create({
+    const newScore = await scoreRepository.create({
       ...payload,
       innings: Number(payload.innings),
       score: Number(payload.score || 0),
@@ -66,6 +67,10 @@ class ScoreService {
       createdBy: userId,
       updatedBy: userId,
     });
+
+    emitToMatch(payload.matchId, "score.created", newScore);
+
+    return newScore;
   }
 
   async updateScore(scoreId, payload, userId) {
@@ -121,6 +126,8 @@ class ScoreService {
     if (!updatedScore) {
       throw new NotFoundError("Score not found");
     }
+
+    emitToMatch(matchId, "score.updated", updatedScore);
 
     return updatedScore;
   }

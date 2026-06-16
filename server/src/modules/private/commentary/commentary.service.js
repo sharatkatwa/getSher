@@ -7,6 +7,7 @@ import {
   NotFoundError,
   ValidationError,
 } from "../../../shared/error/custom.errors.js";
+import { emitToMatch } from "../../../sockets/socketGateway.js";
 
 const validateObjectId = (id, fieldName) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -36,12 +37,16 @@ class CommentaryService {
   async addCommentary(payload, userId) {
     await this.ensureLiveMatch(payload.matchId);
 
-    return await commentaryRepository.create({
+    const commentary = await commentaryRepository.create({
       ...payload,
       over: Number(payload.over),
       ball: Number(payload.ball),
       createdBy: userId,
     });
+
+    emitToMatch(payload.matchId, "commentary.created", commentary);
+
+    return commentary;
   }
 
   async deleteCommentary(commentaryId) {
@@ -55,7 +60,11 @@ class CommentaryService {
 
     await this.ensureLiveMatch(getId(commentary.matchId));
 
-    return await commentaryRepository.deleteById(commentaryId);
+    const deletedCommentary = await commentaryRepository.deleteById(commentaryId);
+
+    emitToMatch(getId(commentary.matchId), "commentary.deleted", deletedCommentary);
+
+    return deletedCommentary;
   }
 }
 
