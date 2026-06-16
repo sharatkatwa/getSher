@@ -1,6 +1,7 @@
 import Icon from "./Icon";
+import ProfileMenu from "./ProfileMenu";
 
-const TopBar = ({ onMenuClick }) => {
+const TopBar = ({ onMenuClick, user }) => {
   return (
     <header className="sticky top-0 z-20 border-b border-outline-variant bg-surface-container-lowest/95 backdrop-blur">
       <div className="flex h-16 items-center gap-md px-md lg:px-lg">
@@ -26,9 +27,7 @@ const TopBar = ({ onMenuClick }) => {
         <button className="grid size-10 place-items-center rounded-full text-primary hover:bg-surface-container">
           <Icon name="bell" className="h-5 w-5" />
         </button>
-        <button className="grid size-10 place-items-center rounded-full text-primary hover:bg-surface-container">
-          <Icon name="user" className="h-5 w-5" />
-        </button>
+        <ProfileMenu user={user} />
       </div>
     </header>
   );

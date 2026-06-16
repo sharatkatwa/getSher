@@ -1,5 +1,6 @@
 import { NavLink } from "react-router";
 import Icon from "./Icon";
+import UserProfile from "./UserProfile";
 
 const navItems = [
   { label: "Live Scores", icon: "bat", to: "/" },
@@ -15,30 +16,20 @@ const bottomItems = [
 ];
 
 // Shared by desktop sidebar and mobile drawer so navigation stays identical.
-const SidebarContent = ({ onNavigate }) => {
+const SidebarContent = ({ onNavigate, user }) => {
   return (
     <>
-      <div className="flex items-center gap-sm">
-        <div className="grid size-10 place-items-center rounded-full bg-primary text-on-primary">
-          <Icon name="user" className="h-5 w-5" />
-        </div>
-        <div>
-          <p className="text-body-md font-bold text-on-surface">
-            Premium Member
-          </p>
-          <p className="text-label-data text-on-surface-variant">
-            Cricket Enthusiast
-          </p>
-        </div>
-      </div>
+      <UserProfile user={user} />
 
-      <NavLink
-        className="mt-md rounded-md bg-live px-md py-sm text-center text-body-sm font-bold text-on-secondary"
-        onClick={onNavigate}
-        to="/login"
-      >
-        Login/Signup
-      </NavLink>
+      {!user && (
+        <NavLink
+          className="mt-md rounded-md bg-live px-md py-sm text-center text-body-sm font-bold text-on-secondary"
+          onClick={onNavigate}
+          to="/login"
+        >
+          Login/Signup
+        </NavLink>
+      )}
 
       <nav className="mt-lg space-y-sm">
         {navItems.map((item) => (
@@ -75,11 +66,11 @@ const SidebarContent = ({ onNavigate }) => {
   );
 };
 
-const Sidebar = ({ isOpen = false, onClose }) => {
+const Sidebar = ({ isOpen = false, onClose, user }) => {
   return (
     <>
       <aside className="hidden min-h-[calc(100vh-4rem)] w-64 shrink-0 border-r border-outline-variant bg-surface-container-lowest p-md lg:flex lg:flex-col">
-        <SidebarContent />
+        <SidebarContent user={user} />
       </aside>
 
       <div
@@ -106,7 +97,7 @@ const Sidebar = ({ isOpen = false, onClose }) => {
           </button>
         </div>
 
-        <SidebarContent onNavigate={onClose} />
+        <SidebarContent onNavigate={onClose} user={user} />
       </aside>
     </>
   );

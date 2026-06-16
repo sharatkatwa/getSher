@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 import { useLogin, useRegister } from "../../hooks/useAuth";
 import { setUser } from "../../slices/userSlice";
@@ -21,6 +21,7 @@ const getUserPayload = (user) => ({
 const AuthFormCard = ({ mode }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const isRegister = mode === "register";
   const loginMutation = useLogin();
   const registerMutation = useRegister();
@@ -60,7 +61,7 @@ const AuthFormCard = ({ mode }) => {
         : await loginMutation.mutateAsync(payload);
 
       dispatch(setUser(getUserPayload(user)));
-      navigate("/", { replace: true });
+      navigate(location.state?.from || "/", { replace: true });
     } catch (error) {
       setServerError(
         error?.response?.data?.message || "Authentication failed. Please try again.",

@@ -1,5 +1,6 @@
 import { NavLink } from "react-router";
 import Icon from "./Icon";
+import UserProfile from "./UserProfile";
 
 const navItems = [
   { label: "Dashboard", icon: "dashboard", to: "/admin" },
@@ -17,7 +18,7 @@ const utilityItems = [
 ];
 
 // Shared by desktop admin sidebar and mobile admin drawer.
-const AdminSidebarContent = ({ onNavigate }) => {
+const AdminSidebarContent = ({ onNavigate, user }) => {
   return (
     <>
       <div className="rounded-lg bg-primary p-md text-on-primary">
@@ -26,6 +27,10 @@ const AdminSidebarContent = ({ onNavigate }) => {
         <p className="mt-xs text-body-sm text-on-primary/75">
           Operations, squads, fixtures, and score setup.
         </p>
+      </div>
+
+      <div className="mt-md rounded-lg border border-outline-variant bg-surface-container-lowest p-sm">
+        <UserProfile user={user} />
       </div>
 
       <nav className="mt-lg space-y-sm">
@@ -66,11 +71,11 @@ const AdminSidebarContent = ({ onNavigate }) => {
   );
 };
 
-const AdminSidebar = ({ isOpen = false, onClose }) => {
+const AdminSidebar = ({ isOpen = false, onClose, user }) => {
   return (
     <>
       <aside className="hidden min-h-[calc(100vh-4rem)] w-72 shrink-0 border-r border-outline-variant bg-surface-container-lowest p-md lg:flex lg:flex-col">
-        <AdminSidebarContent />
+        <AdminSidebarContent user={user} />
       </aside>
 
       <div
@@ -96,7 +101,7 @@ const AdminSidebar = ({ isOpen = false, onClose }) => {
           </button>
         </div>
 
-        <AdminSidebarContent onNavigate={onClose} />
+        <AdminSidebarContent onNavigate={onClose} user={user} />
       </aside>
     </>
   );
