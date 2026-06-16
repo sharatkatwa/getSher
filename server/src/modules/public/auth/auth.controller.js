@@ -4,6 +4,17 @@ import { app_config } from "../../../constants/app.constant.js"
 import { buildSuccessResponse } from "../../../shared/utils/buildSuccessResponse.js"
 import { StatusCodes } from "http-status-codes";
 
+const usesSecureCookies =
+    env.NODE_ENV === "production" || env.REDIRECT_URL?.startsWith("https://");
+
+const getCookieOptions = (options) => ({
+    ...options,
+    sameSite: usesSecureCookies ? "none" : "lax",
+    secure: usesSecureCookies,
+});
+
+const accessTokenCookieOptions = () => getCookieOptions(app_config.cookie.accessToken);
+const refreshTokenCookieOptions = () => getCookieOptions(app_config.cookie.refreshToken);
 
 export default class AuthController {
     constructor() {
@@ -16,9 +27,9 @@ export default class AuthController {
 
         const { accessToken, refreshToken } = await this.userService.CreateUser(req.user)
 
-        res.cookie('refreshToken', refreshToken, app_config.cookie.refreshToken)
+        res.cookie('refreshToken', refreshToken, refreshTokenCookieOptions())
 
-        res.cookie('accessToken', accessToken, app_config.cookie.accessToken)
+        res.cookie('accessToken', accessToken, accessTokenCookieOptions())
         // console.log(req.user);
         res.redirect(env.REDIRECT_URL);
         return buildSuccessResponse(
@@ -33,9 +44,9 @@ export default class AuthController {
     async Register(req, res) {
         const { user, accessToken, refreshToken } = await this.userService.RegisterUser(req.body)
 
-        res.cookie('refreshToken', refreshToken, app_config.cookie.refreshToken)
+        res.cookie('refreshToken', refreshToken, refreshTokenCookieOptions())
 
-        res.cookie('accessToken', accessToken, app_config.cookie.accessToken)
+        res.cookie('accessToken', accessToken, accessTokenCookieOptions())
         // console.log(req.user);
          
         return buildSuccessResponse(
@@ -49,9 +60,9 @@ export default class AuthController {
     async Login(req, res) {
         const { user, accessToken, refreshToken } = await this.userService.LoginUser(req.body)
 
-        res.cookie('refreshToken', refreshToken, app_config.cookie.refreshToken)
+        res.cookie('refreshToken', refreshToken, refreshTokenCookieOptions())
 
-        res.cookie('accessToken', accessToken, app_config.cookie.accessToken)
+        res.cookie('accessToken', accessToken, accessTokenCookieOptions())
         // console.log(req.user);
 
         return buildSuccessResponse(
@@ -78,7 +89,7 @@ export default class AuthController {
     async RefreshTokenController(req, res) {
         let accessToken = await this.userService.RefreshTokenService(req.cookies)
 
-        res.cookie('accessToken', accessToken, app_config.cookie.accessToken)
+        res.cookie('accessToken', accessToken, accessTokenCookieOptions())
 
         return buildSuccessResponse(
             res,
@@ -92,8 +103,8 @@ export default class AuthController {
 
         await this.userService.LogoutService(req.cookies);
 
-        res.clearCookie("accessToken");
-        res.clearCookie("refreshToken");
+        res.clearCookie("accessToken", accessTokenCookieOptions());
+        res.clearCookie("refreshToken", refreshTokenCookieOptions());
 
         return buildSuccessResponse(
             res,

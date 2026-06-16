@@ -1,23 +1,14 @@
 import { Server } from "socket.io";
 import logger from "../config/logger.js";
+import { buildCorsOptions } from "../config/cors.js";
 
 let ioInstance = null;
 
 const getMatchRoom = (matchId) => `match:${matchId}`;
 
-const parseCorsOrigins = (corsOrigin = "") =>
-  corsOrigin
-    .split(",")
-    .map((origin) => origin.trim())
-    .filter(Boolean);
-
 export const initSocket = (httpServer, corsOrigin) => {
   ioInstance = new Server(httpServer, {
-    cors: {
-      origin: parseCorsOrigins(corsOrigin),
-      credentials: true,
-      methods: ["GET", "POST"],
-    },
+    cors: buildCorsOptions(corsOrigin),
   });
 
   ioInstance.on("connection", (socket) => {
