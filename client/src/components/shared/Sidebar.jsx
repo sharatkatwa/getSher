@@ -32,9 +32,13 @@ const SidebarContent = ({ onNavigate }) => {
         </div>
       </div>
 
-      <button className="mt-md rounded-md bg-live px-md py-sm text-body-sm font-bold text-on-secondary">
+      <NavLink
+        className="mt-md rounded-md bg-live px-md py-sm text-center text-body-sm font-bold text-on-secondary"
+        onClick={onNavigate}
+        to="/login"
+      >
         Login/Signup
-      </button>
+      </NavLink>
 
       <nav className="mt-lg space-y-sm">
         {navItems.map((item) => (
