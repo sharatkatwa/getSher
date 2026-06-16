@@ -4,8 +4,10 @@ import { app_config } from "../../../constants/app.constant.js"
 import { buildSuccessResponse } from "../../../shared/utils/buildSuccessResponse.js"
 import { StatusCodes } from "http-status-codes";
 
+const redirectUrl = env.REDIRECT_URL?.trim().replace(/^['"]|['"]$/g, "");
+
 const usesSecureCookies =
-    env.NODE_ENV === "production" || env.REDIRECT_URL?.startsWith("https://");
+    env.NODE_ENV === "production" || redirectUrl?.startsWith("https://");
 
 const getCookieOptions = (options) => ({
     ...options,
@@ -31,13 +33,7 @@ export default class AuthController {
 
         res.cookie('accessToken', accessToken, accessTokenCookieOptions())
         // console.log(req.user);
-        res.redirect(env.REDIRECT_URL);
-        return buildSuccessResponse(
-            res,
-            "Login successful",
-            StatusCodes.OK,
-            req.user
-        );
+        return res.redirect(redirectUrl);
 
     }
 
