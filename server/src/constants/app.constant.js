@@ -2,7 +2,7 @@ export default {
   PORT: 3000,
   MONGO_URI: "mongodb://localhost:27017/cricbuzz",
   LOGGER_LEVEL: "info",
-  NODE_ENV: "development",
+  NODE_ENV: "production",
   RATELIMIT_WINDOWMS: 15 * 60 * 1000,
   RATELIMIT: 100,
   GOOGLE_CALLBACK_URL: 'http://localhost:3000/api/auth/google/callback',

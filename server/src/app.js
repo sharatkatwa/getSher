@@ -1,6 +1,6 @@
 import express from "express";
 import env from "./config/env.js";
-import morgan from "morgan";
+// import morgan from "morgan";
 
 // middleware import statements
 import ErrorHandler from "./middlewares/errorHandler.middleware.js";
@@ -30,9 +30,9 @@ export default function createApp() {
 
   googleOAuthMiddleware(app);
 
-  if (env.NODE_ENV === "development") {
-    app.use(morgan("dev"));
-  }
+  // if (env.NODE_ENV === "development") {
+  //   app.use(morgan("dev"));
+  // }
 
   // all middlewares related to security can found here
   securityMiddleware(app);
