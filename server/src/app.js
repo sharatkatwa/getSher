@@ -18,6 +18,11 @@ import publicMatchRoutes from "./modules/public/match/match.router.js";
 import privateMatchRoutes from "./modules/private/match/match.route.js";
 import publicPlayerRoutes from "./modules/public/player/player.router.js";
 import privatePlayerRoutes from "./modules/private/player/player.router.js";
+import privateUserRoutes from "./modules/private/user/user.route.js";
+import privateScoreRoutes from "./modules/private/score/score.route.js";
+import publicScoreRoutes from "./modules/public/score/score.route.js";
+import publicCommentaryRoutes from "./modules/public/commentary/commentary.route.js";
+import privateCommentaryRoutes from "./modules/private/commentary/commentary.route.js";
 
 export default function createApp() {
   const app = express();
@@ -44,12 +49,17 @@ export default function createApp() {
   app.use("/api/team", publicTeamRoutes);
   app.use("/api/match", publicMatchRoutes);
   app.use("/api/player", publicPlayerRoutes);
+  app.use("/api/scores", publicScoreRoutes);
+  app.use("/api/commentary", publicCommentaryRoutes);
 
   // Private Routes
   app.use("/api/series", privateSeriesRoutes);
   app.use("/api/team", privateTeamRoutes);
   app.use("/api/match", privateMatchRoutes);
   app.use("/api/player", privatePlayerRoutes);
+  app.use("/api/users", privateUserRoutes);
+  app.use("/api/scores", privateScoreRoutes);
+  app.use("/api/commentary", privateCommentaryRoutes);
 
   app.use(notFound);
   app.use(ErrorHandler);
