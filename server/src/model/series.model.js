@@ -18,6 +18,6 @@ const seriesSchema = new Schema(
   { timestamps: true },
 );
 
-const seriesModel = model("Series", seriesSchema);
+const seriesModel = model("series", seriesSchema);
 
 export default seriesModel;
