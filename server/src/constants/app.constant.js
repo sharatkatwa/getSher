@@ -1,3 +1,4 @@
+import env from '../config/env.js'
 export default {
   PORT: 3000,
   MONGO_URI: "mongodb://localhost:27017/cricbuzz",
@@ -18,12 +19,12 @@ export const app_config = {
     accessToken: {
       httpOnly: false,
       secure: false,
-      maxAge: 60 * 60 * 1000
+      maxAge:  60 * 60 * 1000 
     },
     refreshToken: {
       httpOnly: true,
       secure: false,
-      maxAge: 60 * 60 * 1000
+      maxAge: 30 * 24 * 60 * 60 * 1000
     }
   }
 }
