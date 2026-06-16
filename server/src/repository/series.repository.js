@@ -29,5 +29,11 @@ export default class SeriesRepository {
     return await seriesModel.findByIdAndDelete(id)
   }
 
+
+  // delete after testing
+  async exists(id) {
+  return !!(await seriesModel.exists({ _id: id }));
+}
+
 }
 

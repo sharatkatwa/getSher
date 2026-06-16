@@ -67,5 +67,17 @@ export default class TeamRepo {
       .lean();
   }
 
+
+    // delete after testing
+
+async exists(id) {
+  return !!(
+    await teamModel.exists({
+      _id: id,
+      isDeleted: false,
+    })
+  );
+}
+
   // end
 }
