@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./src/server.js",
-    "dev": "nodemon ./src/server.js",
+    "start": "node init && node ./src/server.js",
+    "dev": "node init && nodemon ./src/server.js",
     "seed": "node ./seed/index.js"
   },
   "keywords": [],

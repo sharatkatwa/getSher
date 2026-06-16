@@ -47,9 +47,9 @@ export default class AuthService {
          name: result.name
       };
 
-      const refreshToken = jwt.sign(data, env.REFRESH_TOKEN_SECRET, app_config.jwt.refreshToken)
+      const refreshToken = await jwt.sign(data, env.REFRESH_TOKEN_SECRET, app_config.jwt.refreshToken)
 
-      const accessToken = jwt.sign(data, env.ACCESS_TOKEN_SECRET, app_config.jwt.accessToken)
+      const accessToken = await jwt.sign(data, env.ACCESS_TOKEN_SECRET, app_config.jwt.accessToken)
 
       return {
          refreshToken,
