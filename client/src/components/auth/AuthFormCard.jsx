@@ -9,16 +9,17 @@ const AuthFormCard = ({ mode }) => {
   return (
     // Static UI only for now; API submission can be added here later.
     <form className="grid gap-md">
-      <GoogleAuthButton>{isRegister ? "Sign up with Google" : "Login with Google"}</GoogleAuthButton>
+      <GoogleAuthButton
+      >{isRegister ? "Sign up with Google" : "Login with Google"}</GoogleAuthButton>
       <AuthDivider />
 
       {isRegister && (
-        <AuthTextField
-          autoComplete="name"
-          label="Full name"
-          name="name"
-          placeholder="Virat Kohli"
-        />
+      <AuthTextField
+        autoComplete="name"
+        label="Full name"
+        name="name"
+        placeholder="Virat Kohli"
+      />
       )}
 
       <AuthTextField

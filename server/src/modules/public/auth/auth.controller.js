@@ -20,6 +20,7 @@ export default class AuthController {
 
         res.cookie('accessToken', accessToken, app_config.cookie.accessToken)
         // console.log(req.user);
+        res.redirect(env.REDIRECT_URL);
         return buildSuccessResponse(
             res,
             "Login successful",
@@ -36,6 +37,7 @@ export default class AuthController {
 
         res.cookie('accessToken', accessToken, app_config.cookie.accessToken)
         // console.log(req.user);
+         
         return buildSuccessResponse(
             res,
             "User registered successfully",

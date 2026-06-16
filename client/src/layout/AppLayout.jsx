@@ -2,8 +2,14 @@ import { useState } from "react";
 import { Outlet } from "react-router";
 import Sidebar from "../components/shared/Sidebar";
 import TopBar from "../components/shared/TopBar";
+import { useQuery } from "@tanstack/react-query";
+import { getMe } from "../api/auth.api";
+
 
 const AppLayout = () => {
+
+   const query = useQuery({ queryKey: ['me'], queryFn: getMe,retry:false ,refetchOnWindowFocus:false})
+
   // Local state keeps the mobile drawer isolated to this layout.
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
